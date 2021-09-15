@@ -34,11 +34,13 @@
 #pragma mark - Setup Thirdparty library
 
 - (void)setupThirdParty {
-    NSString *appKey = @"pvxdm17jpwh7r";
-    NSString *token = @"g6oGiwYubKQg4Nnxj+zoE+GKGVVACgMzE/ZdVCQ622M=@4vsh.cn.rongnav.com;4vsh.cn.rongcfg.com";
+    // 不同的token代表不同的用户
+    NSString *appKey = @"";
+    NSString *token1 = @"";
+    NSString *token2 = @"";
     // 通过语聊房初始化的好处在于不用再初始化融云的IMLib 和 IMKit了。所以最好使用语聊房初始化替代之前的RCCoreClient
     [[RCVoiceRoomEngine sharedInstance] initWithAppkey:appKey];
-    [[RCVoiceRoomEngine sharedInstance] connectWithToken:token success:^{
+    [[RCVoiceRoomEngine sharedInstance] connectWithToken:token2 success:^{
         NSLog(@"connect success");
         [SVProgressHUD showSuccessWithStatus:@"连接融云成功"];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {

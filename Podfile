@@ -8,6 +8,7 @@ target 'ios-voiceroomsdk-quickdemo' do
   pod 'Masonry'
   pod 'SVProgressHUD'
   pod 'YYModel'
+  pod 'RongCloudRTC', '5.1.3'
   # Pods for ios-voiceroomsdk-quickdemo
 
   target 'ios-voiceroomsdk-quickdemoTests' do

@@ -12,6 +12,7 @@
 #import "VoiceRoomViewController.h"
 #import "RoomInfo.h"
 #import "UIColor+Hex.h"
+#import <SVProgressHUD.h>
 
 @interface RoomListViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -27,6 +28,11 @@ NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self buildLayout];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)buildLayout {
@@ -67,26 +73,49 @@ NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 }
 
 - (void)createRoom {
-    NSDate *date = [NSDate now];
+    // 根据时间创建一个房间名称
+    NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
     NSString *dateString = [formatter stringFromDate:date];
     NSString *roomName = [NSString stringWithFormat:@"%@%@", @"测试房间", dateString];
+    
+    // 输入一个房间ID
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"加入房间" message:@"输入房间ID" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"房间ID";
+    }];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *roomId = [[alertController textFields][0] text];
+        if (roomId.length > 0) {
+            // 创建语聊房实例
+            RCVoiceRoomInfo *roomInfo = [[RCVoiceRoomInfo alloc] init];
+            roomInfo.roomName = roomName;
+            // 设置9个麦位
+            roomInfo.seatCount = 9;
+            // 进入语聊房
+            VoiceRoomViewController *vc = [[VoiceRoomViewController alloc] initWithRoomId:roomId roomInfo:roomInfo];
+            [self.navigationController pushViewController:vc animated:YES];
+            
+            // 储存语聊房到本地，主要是便于UI展示
+            RoomInfo *info = [[RoomInfo alloc] init];
+            info.roomId = roomId;
+            info.roomInfo = roomInfo;
+            [self.roomlist addObject:info];
+            [self.tableView reloadData];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"请输入数字"];
+        }
+    }];
+    [alertController addAction:confirmAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"Canelled");
+    }];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
     // 创建房间必须初始化房间信息，设置房间名臣和麦位数量。
     // 否则无法创建成功
-    RCVoiceRoomInfo *roomInfo = [[RCVoiceRoomInfo alloc] init];
-    roomInfo.roomName = roomName;
-    roomInfo.seatCount = 2;
-    [self mockCreateRoomAPI:roomName completin:^(NSString *roomId) {
-        // 暂时存在列表里
-        RoomInfo *info = [[RoomInfo alloc] init];
-        info.roomId = roomId;
-        info.roomInfo = roomInfo;
-        [self.roomlist addObject:info];
-        [self.tableView reloadData];
-        VoiceRoomViewController *vc = [[VoiceRoomViewController alloc] initWithRoomId:roomId roomInfo:roomInfo];
-        [self.navigationController pushViewController:vc animated:YES];
-    }];
+    
 }
 
 - (void)joinRoom {
@@ -107,17 +136,6 @@ NSString * const roomCellIdentifier = @"RoomListTableViewCell";
     }];
     [alertController addAction:cancelAction];
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-#pragma mark - Mock API
-// 创建房间的流程，应该是先调用业务服务器的创建房间接口，等业务服务器返回创建成功，并返回roomId的时候
-// 将roomId和对应的roomInfo传入语聊房SDK，即可创建成功一个语聊房房间
-// 这里使用一个随机的房间号
-- (void)mockCreateRoomAPI:(NSString *)roomName completin:(void (^)(NSString* roomId))completion {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        int roomId = arc4random_uniform(10000) + 10000;
-        completion([NSString stringWithFormat:@"%d", roomId]);
-    });
 }
 
 #pragma mark - UITableView DataSource

@@ -25,7 +25,10 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 // 用来显示麦位的collectionView
 @property (nonatomic, strong) UICollectionView *collectionView;
+// 背景
 @property (nonatomic, strong) UIImageView *backgroundImageView;
+// 退出房间
+@property (nonatomic, strong) UIButton *quitButton;
 
 @end
 
@@ -60,6 +63,11 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [self buildLayout];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
 #pragma mark - Private Method
 
 - (void)buildLayout {
@@ -70,12 +78,122 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         make.edges.equalTo(self.view);
     }];
     
+    [self.view addSubview:self.quitButton];
+    [self.quitButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view).inset(20);
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(20);
+        make.size.equalTo(@(CGSizeMake(44, 44)));
+    }];
+    
     [self.view addSubview:self.collectionView];
     self.collectionView.backgroundColor = [UIColor clearColor];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
-        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-        make.height.equalTo(@(160));
+        make.top.equalTo(self.quitButton.mas_bottom).offset(20);
+        make.height.equalTo(@(255));
+    }];
+    
+    UIButton *enterSeatButton = [self actionButtonFactory:@"上麦" withAction:@selector(enterSeat)];
+    UIButton *leaveSeatButton = [self actionButtonFactory:@"下麦" withAction:@selector(leaveSeat)];
+    UIButton *lockSeatButton = [self actionButtonFactory:@"锁麦" withAction:@selector(lockSeat)];
+    UIButton *muteSeatButton = [self actionButtonFactory:@"闭麦" withAction:@selector(muteSeat)];
+    UIStackView *stackView1 = [self stackViewWithViews:@[enterSeatButton, leaveSeatButton, lockSeatButton, muteSeatButton]];
+    [self.view addSubview:stackView1];
+    [stackView1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(20);
+        make.top.equalTo(self.collectionView.mas_bottom).offset(20);
+    }];
+}
+
+- (UIButton *)actionButtonFactory:(NSString *)title withAction:(SEL)action {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = [UIColor colorFromHexString:@"#EF499A"];
+    button.layer.cornerRadius = 6;
+    [button setTitle:title forState: UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState: UIControlStateNormal];
+    [button addTarget:self action:action forControlEvents: UIControlEventTouchUpInside];
+    [[button.widthAnchor constraintGreaterThanOrEqualToConstant:70] setActive:YES];
+    return button;
+}
+
+- (UIStackView *)stackViewWithViews:(NSArray *)views {
+    UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:views];
+    stackView.axis = UILayoutConstraintAxisHorizontal;
+    stackView.spacing = 10;
+    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.distribution = UIStackViewDistributionEqualSpacing;
+    return stackView;
+}
+
+- (void)showInputAlert:(void (^)(NSInteger seatIndex))completion {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入麦位序号" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"麦位序号";
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+    }];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *value = [[alertController textFields][0] text];
+        NSUInteger seatIndex = value.integerValue;
+        completion(seatIndex);
+    }];
+    [alertController addAction:confirmAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"Canelled");
+    }];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)enterSeat {
+    [self showInputAlert:^(NSInteger seatIndex) {
+        [[RCVoiceRoomEngine sharedInstance] enterSeat:seatIndex success:^{
+            [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+            [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:NO];
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            [SVProgressHUD showSuccessWithStatus:@"上麦失败"];
+        }];
+    }];
+}
+
+- (void)leaveSeat {
+    [[RCVoiceRoomEngine sharedInstance] leaveSeatWithSuccess:^{
+        [SVProgressHUD showSuccessWithStatus:@"下麦成功"];
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        [SVProgressHUD showSuccessWithStatus:@"下麦失败"];
+    }];
+}
+
+- (void)lockSeat {
+    [self showInputAlert:^(NSInteger seatIndex) {
+        RCVoiceSeatInfo *seatInfo = self.seatlist[seatIndex];
+        BOOL isLock = (seatInfo.status == RCSeatStatusLocking) ? NO : YES;
+        [[RCVoiceRoomEngine sharedInstance] lockSeat:seatIndex lock:isLock success:^{
+            [SVProgressHUD showSuccessWithStatus:@"锁麦成功"];
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            [SVProgressHUD showSuccessWithStatus:@"锁麦失败"];
+        }];
+    }];
+}
+
+- (void)quitRoom {
+    [[RCVoiceRoomEngine sharedInstance] leaveRoom:^{
+        [SVProgressHUD showSuccessWithStatus:@"离开房间成功"];
+        [self.navigationController popViewControllerAnimated:true];
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        [SVProgressHUD showSuccessWithStatus:@"离开房间失败"];
+    }];
+}
+
+- (void)muteSeat {
+    [self showInputAlert:^(NSInteger seatIndex) {
+        RCVoiceSeatInfo *seatInfo = self.seatlist[seatIndex];
+        BOOL isMute = !seatInfo.isMuted;
+        NSString *muteString = (isMute ? @"闭麦" : @"取消闭麦");
+        [[RCVoiceRoomEngine sharedInstance] muteSeat:seatIndex mute:isMute success:^{
+            [SVProgressHUD showSuccessWithStatus:[muteString stringByAppendingString:@"成功"]];
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            [SVProgressHUD showSuccessWithStatus:[muteString stringByAppendingString:@"失败"]];
+        }];
     }];
 }
 
@@ -112,6 +230,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         [_collectionView registerClass:[SeatInfoCollectionViewCell class] forCellWithReuseIdentifier:cellIdentifier];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
+        _collectionView.contentInset = UIEdgeInsetsMake(0, 20, 0, 20);
     }
     return _collectionView;
 }
@@ -130,6 +249,15 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     return _seatlist;
 }
 
+- (UIButton *)quitButton {
+    if (!_quitButton) {
+        _quitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_quitButton setImage:[UIImage imageNamed:@"white_quite_icon"] forState:UIControlStateNormal];
+        [_quitButton addTarget:self action:@selector(quitRoom) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _quitButton;
+}
+
 #pragma mark - CollectionView Delegate & DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -138,7 +266,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SeatInfoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    
+    [cell updateCell:self.seatlist[indexPath.row] withSeatIndex:indexPath.row];
     return cell;
 }
 

@@ -7,10 +7,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class RCVoiceSeatInfo;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SeatInfoCollectionViewCell : UICollectionViewCell
-
+- (void)updateCell:(RCVoiceSeatInfo *)seatInfo withSeatIndex:(NSUInteger)index;
 @end
 
 NS_ASSUME_NONNULL_END
