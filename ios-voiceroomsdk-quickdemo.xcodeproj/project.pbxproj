@@ -1,0 +1,859 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D575A014015084E9D4CC0EC /* Pods_ios_voiceroomsdk_quickdemo_ios_voiceroomsdk_quickdemoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B610F83335D9A69A9516018 /* Pods_ios_voiceroomsdk_quickdemo_ios_voiceroomsdk_quickdemoUITests.framework */; };
+		4E1193D2943DFA55FE682803 /* Pods_ios_voiceroomsdk_quickdemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB163B4681DA42D8F92F52E /* Pods_ios_voiceroomsdk_quickdemo.framework */; };
+		860B6664B3E1E6D1C936052D /* Pods_ios_voiceroomsdk_quickdemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90843E54EF1E3F92DBAB06EE /* Pods_ios_voiceroomsdk_quickdemoTests.framework */; };
+		CB25664926EB30EC0041425B /* RoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25664826EB30EC0041425B /* RoomListViewController.m */; };
+		CB25664E26EB31CD0041425B /* RoomListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25664D26EB31CD0041425B /* RoomListTableViewCell.m */; };
+		CB25665726EB34930041425B /* VoiceRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25665626EB34930041425B /* VoiceRoomViewController.m */; };
+		CB25666A26F18FBB0041425B /* SeatInfoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25666926F18FBB0041425B /* SeatInfoCollectionViewCell.m */; };
+		CB25666E26F1A1730041425B /* RoomInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25666D26F1A1730041425B /* RoomInfo.m */; };
+		CB25667626F1CF110041425B /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25667526F1CF110041425B /* UIColor+Hex.m */; };
+		CB85D3F326CB489A001D90FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D3F226CB489A001D90FC /* AppDelegate.m */; };
+		CB85D3FE26CB489A001D90FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB85D3FD26CB489A001D90FC /* Assets.xcassets */; };
+		CB85D40126CB489A001D90FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB85D3FF26CB489A001D90FC /* LaunchScreen.storyboard */; };
+		CB85D40426CB489A001D90FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D40326CB489A001D90FC /* main.m */; };
+		CB85D40E26CB489B001D90FC /* ios_voiceroomsdk_quickdemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D40D26CB489B001D90FC /* ios_voiceroomsdk_quickdemoTests.m */; };
+		CB85D41926CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D41826CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CB85D40A26CB489B001D90FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB85D3E626CB489A001D90FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB85D3ED26CB489A001D90FC;
+			remoteInfo = "ios-voiceroomsdk-quickdemo";
+		};
+		CB85D41526CB489B001D90FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB85D3E626CB489A001D90FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB85D3ED26CB489A001D90FC;
+			remoteInfo = "ios-voiceroomsdk-quickdemo";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04A6CA16303FABEB4F0A4A8F /* Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.release.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.release.xcconfig"; sourceTree = "<group>"; };
+		443A3C7AC2E5881084478DA6 /* Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		47B596A973753A71416CEBBD /* Pods-ios-voiceroomsdk-quickdemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemoTests.release.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemoTests/Pods-ios-voiceroomsdk-quickdemoTests.release.xcconfig"; sourceTree = "<group>"; };
+		51681FB48082B35A2EDABBFC /* Pods-ios-voiceroomsdk-quickdemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemo.release.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo.release.xcconfig"; sourceTree = "<group>"; };
+		5B610F83335D9A69A9516018 /* Pods_ios_voiceroomsdk_quickdemo_ios_voiceroomsdk_quickdemoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_voiceroomsdk_quickdemo_ios_voiceroomsdk_quickdemoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		90843E54EF1E3F92DBAB06EE /* Pods_ios_voiceroomsdk_quickdemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_voiceroomsdk_quickdemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB163B4681DA42D8F92F52E /* Pods_ios_voiceroomsdk_quickdemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_voiceroomsdk_quickdemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5CDCC80DEDA2DDBAFF2FF5E /* Pods-ios-voiceroomsdk-quickdemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemo.debug.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo.debug.xcconfig"; sourceTree = "<group>"; };
+		CB25664726EB30EC0041425B /* RoomListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomListViewController.h; sourceTree = "<group>"; };
+		CB25664826EB30EC0041425B /* RoomListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomListViewController.m; sourceTree = "<group>"; };
+		CB25664C26EB31CD0041425B /* RoomListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomListTableViewCell.h; sourceTree = "<group>"; };
+		CB25664D26EB31CD0041425B /* RoomListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomListTableViewCell.m; sourceTree = "<group>"; };
+		CB25665526EB34930041425B /* VoiceRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoiceRoomViewController.h; sourceTree = "<group>"; };
+		CB25665626EB34930041425B /* VoiceRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoiceRoomViewController.m; sourceTree = "<group>"; };
+		CB25666826F18FBB0041425B /* SeatInfoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeatInfoCollectionViewCell.h; sourceTree = "<group>"; };
+		CB25666926F18FBB0041425B /* SeatInfoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeatInfoCollectionViewCell.m; sourceTree = "<group>"; };
+		CB25666C26F1A1730041425B /* RoomInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomInfo.h; sourceTree = "<group>"; };
+		CB25666D26F1A1730041425B /* RoomInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomInfo.m; sourceTree = "<group>"; };
+		CB25667426F1CF110041425B /* UIColor+Hex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
+		CB25667526F1CF110041425B /* UIColor+Hex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
+		CB85D3EE26CB489A001D90FC /* ios-voiceroomsdk-quickdemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-voiceroomsdk-quickdemo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB85D3F126CB489A001D90FC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CB85D3F226CB489A001D90FC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CB85D3FD26CB489A001D90FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CB85D40026CB489A001D90FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CB85D40226CB489A001D90FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB85D40326CB489A001D90FC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CB85D40926CB489B001D90FC /* ios-voiceroomsdk-quickdemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-voiceroomsdk-quickdemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB85D40D26CB489B001D90FC /* ios_voiceroomsdk_quickdemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ios_voiceroomsdk_quickdemoTests.m; sourceTree = "<group>"; };
+		CB85D40F26CB489B001D90FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB85D41426CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-voiceroomsdk-quickdemoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB85D41826CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ios_voiceroomsdk_quickdemoUITests.m; sourceTree = "<group>"; };
+		CB85D41A26CB489B001D90FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D382C62C5BB1FFA4A19A7CB5 /* Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemoTests/Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CB85D3EB26CB489A001D90FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4E1193D2943DFA55FE682803 /* Pods_ios_voiceroomsdk_quickdemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB85D40626CB489B001D90FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				860B6664B3E1E6D1C936052D /* Pods_ios_voiceroomsdk_quickdemoTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB85D41126CB489B001D90FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D575A014015084E9D4CC0EC /* Pods_ios_voiceroomsdk_quickdemo_ios_voiceroomsdk_quickdemoUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		69C418C64E879BBE54403642 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9CB163B4681DA42D8F92F52E /* Pods_ios_voiceroomsdk_quickdemo.framework */,
+				5B610F83335D9A69A9516018 /* Pods_ios_voiceroomsdk_quickdemo_ios_voiceroomsdk_quickdemoUITests.framework */,
+				90843E54EF1E3F92DBAB06EE /* Pods_ios_voiceroomsdk_quickdemoTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CB25664A26EB31A60041425B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CB25664726EB30EC0041425B /* RoomListViewController.h */,
+				CB25664826EB30EC0041425B /* RoomListViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CB25664B26EB31C00041425B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CB25664C26EB31CD0041425B /* RoomListTableViewCell.h */,
+				CB25664D26EB31CD0041425B /* RoomListTableViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CB25664F26EB32A30041425B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CB25666C26F1A1730041425B /* RoomInfo.h */,
+				CB25666D26F1A1730041425B /* RoomInfo.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CB25665326EB347F0041425B /* VoiceRoom */ = {
+			isa = PBXGroup;
+			children = (
+				CB25666726F18FAB0041425B /* View */,
+				CB25665426EB34880041425B /* ViewController */,
+			);
+			path = VoiceRoom;
+			sourceTree = "<group>";
+		};
+		CB25665426EB34880041425B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CB25665526EB34930041425B /* VoiceRoomViewController.h */,
+				CB25665626EB34930041425B /* VoiceRoomViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CB25666726F18FAB0041425B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CB25666826F18FBB0041425B /* SeatInfoCollectionViewCell.h */,
+				CB25666926F18FBB0041425B /* SeatInfoCollectionViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CB25666F26F1BF780041425B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CB25667426F1CF110041425B /* UIColor+Hex.h */,
+				CB25667526F1CF110041425B /* UIColor+Hex.m */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		CB85D3E526CB489A001D90FC = {
+			isa = PBXGroup;
+			children = (
+				CB85D3F026CB489A001D90FC /* ios-voiceroomsdk-quickdemo */,
+				CB85D40C26CB489B001D90FC /* ios-voiceroomsdk-quickdemoTests */,
+				CB85D41726CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests */,
+				CB85D3EF26CB489A001D90FC /* Products */,
+				D1C79F9892C92F5B92512179 /* Pods */,
+				69C418C64E879BBE54403642 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CB85D3EF26CB489A001D90FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CB85D3EE26CB489A001D90FC /* ios-voiceroomsdk-quickdemo.app */,
+				CB85D40926CB489B001D90FC /* ios-voiceroomsdk-quickdemoTests.xctest */,
+				CB85D41426CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB85D3F026CB489A001D90FC /* ios-voiceroomsdk-quickdemo */ = {
+			isa = PBXGroup;
+			children = (
+				CB25666F26F1BF780041425B /* Extension */,
+				CB25665326EB347F0041425B /* VoiceRoom */,
+				CBA7F3BB26DDDAB300AD716C /* RoomList */,
+				CB85D3F126CB489A001D90FC /* AppDelegate.h */,
+				CB85D3F226CB489A001D90FC /* AppDelegate.m */,
+				CB85D3FD26CB489A001D90FC /* Assets.xcassets */,
+				CB85D3FF26CB489A001D90FC /* LaunchScreen.storyboard */,
+				CB85D40226CB489A001D90FC /* Info.plist */,
+				CB85D40326CB489A001D90FC /* main.m */,
+			);
+			path = "ios-voiceroomsdk-quickdemo";
+			sourceTree = "<group>";
+		};
+		CB85D40C26CB489B001D90FC /* ios-voiceroomsdk-quickdemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				CB85D40D26CB489B001D90FC /* ios_voiceroomsdk_quickdemoTests.m */,
+				CB85D40F26CB489B001D90FC /* Info.plist */,
+			);
+			path = "ios-voiceroomsdk-quickdemoTests";
+			sourceTree = "<group>";
+		};
+		CB85D41726CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CB85D41826CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m */,
+				CB85D41A26CB489B001D90FC /* Info.plist */,
+			);
+			path = "ios-voiceroomsdk-quickdemoUITests";
+			sourceTree = "<group>";
+		};
+		CBA7F3BB26DDDAB300AD716C /* RoomList */ = {
+			isa = PBXGroup;
+			children = (
+				CB25664F26EB32A30041425B /* Model */,
+				CB25664B26EB31C00041425B /* View */,
+				CB25664A26EB31A60041425B /* ViewController */,
+			);
+			path = RoomList;
+			sourceTree = "<group>";
+		};
+		D1C79F9892C92F5B92512179 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C5CDCC80DEDA2DDBAFF2FF5E /* Pods-ios-voiceroomsdk-quickdemo.debug.xcconfig */,
+				51681FB48082B35A2EDABBFC /* Pods-ios-voiceroomsdk-quickdemo.release.xcconfig */,
+				443A3C7AC2E5881084478DA6 /* Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.debug.xcconfig */,
+				04A6CA16303FABEB4F0A4A8F /* Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.release.xcconfig */,
+				D382C62C5BB1FFA4A19A7CB5 /* Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig */,
+				47B596A973753A71416CEBBD /* Pods-ios-voiceroomsdk-quickdemoTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CB85D3ED26CB489A001D90FC /* ios-voiceroomsdk-quickdemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB85D41D26CB489B001D90FC /* Build configuration list for PBXNativeTarget "ios-voiceroomsdk-quickdemo" */;
+			buildPhases = (
+				2FF25E3E1838EE290428A89A /* [CP] Check Pods Manifest.lock */,
+				CB85D3EA26CB489A001D90FC /* Sources */,
+				CB85D3EB26CB489A001D90FC /* Frameworks */,
+				CB85D3EC26CB489A001D90FC /* Resources */,
+				47A34198C0612F2D755027F3 /* [CP] Embed Pods Frameworks */,
+				C95B8C55F0B2609C9236B168 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ios-voiceroomsdk-quickdemo";
+			productName = "ios-voiceroomsdk-quickdemo";
+			productReference = CB85D3EE26CB489A001D90FC /* ios-voiceroomsdk-quickdemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CB85D40826CB489B001D90FC /* ios-voiceroomsdk-quickdemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB85D42026CB489B001D90FC /* Build configuration list for PBXNativeTarget "ios-voiceroomsdk-quickdemoTests" */;
+			buildPhases = (
+				A957070467342EA2BBB1885F /* [CP] Check Pods Manifest.lock */,
+				CB85D40526CB489B001D90FC /* Sources */,
+				CB85D40626CB489B001D90FC /* Frameworks */,
+				CB85D40726CB489B001D90FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB85D40B26CB489B001D90FC /* PBXTargetDependency */,
+			);
+			name = "ios-voiceroomsdk-quickdemoTests";
+			productName = "ios-voiceroomsdk-quickdemoTests";
+			productReference = CB85D40926CB489B001D90FC /* ios-voiceroomsdk-quickdemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CB85D41326CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB85D42326CB489B001D90FC /* Build configuration list for PBXNativeTarget "ios-voiceroomsdk-quickdemoUITests" */;
+			buildPhases = (
+				A8B703630E2B0085B78CB0D1 /* [CP] Check Pods Manifest.lock */,
+				CB85D41026CB489B001D90FC /* Sources */,
+				CB85D41126CB489B001D90FC /* Frameworks */,
+				CB85D41226CB489B001D90FC /* Resources */,
+				7017CCB451E3601981E7FB3C /* [CP] Embed Pods Frameworks */,
+				37FE4250DFDC96E77879E9EF /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB85D41626CB489B001D90FC /* PBXTargetDependency */,
+			);
+			name = "ios-voiceroomsdk-quickdemoUITests";
+			productName = "ios-voiceroomsdk-quickdemoUITests";
+			productReference = CB85D41426CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CB85D3E626CB489A001D90FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					CB85D3ED26CB489A001D90FC = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
+					CB85D40826CB489B001D90FC = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = CB85D3ED26CB489A001D90FC;
+					};
+					CB85D41326CB489B001D90FC = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = CB85D3ED26CB489A001D90FC;
+					};
+				};
+			};
+			buildConfigurationList = CB85D3E926CB489A001D90FC /* Build configuration list for PBXProject "ios-voiceroomsdk-quickdemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CB85D3E526CB489A001D90FC;
+			productRefGroup = CB85D3EF26CB489A001D90FC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CB85D3ED26CB489A001D90FC /* ios-voiceroomsdk-quickdemo */,
+				CB85D40826CB489B001D90FC /* ios-voiceroomsdk-quickdemoTests */,
+				CB85D41326CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CB85D3EC26CB489A001D90FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB85D40126CB489A001D90FC /* LaunchScreen.storyboard in Resources */,
+				CB85D3FE26CB489A001D90FC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB85D40726CB489B001D90FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB85D41226CB489B001D90FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2FF25E3E1838EE290428A89A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ios-voiceroomsdk-quickdemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		37FE4250DFDC96E77879E9EF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		47A34198C0612F2D755027F3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7017CCB451E3601981E7FB3C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A8B703630E2B0085B78CB0D1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A957070467342EA2BBB1885F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ios-voiceroomsdk-quickdemoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C95B8C55F0B2609C9236B168 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ios-voiceroomsdk-quickdemo/Pods-ios-voiceroomsdk-quickdemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CB85D3EA26CB489A001D90FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB25665726EB34930041425B /* VoiceRoomViewController.m in Sources */,
+				CB25664926EB30EC0041425B /* RoomListViewController.m in Sources */,
+				CB85D3F326CB489A001D90FC /* AppDelegate.m in Sources */,
+				CB85D40426CB489A001D90FC /* main.m in Sources */,
+				CB25666A26F18FBB0041425B /* SeatInfoCollectionViewCell.m in Sources */,
+				CB25667626F1CF110041425B /* UIColor+Hex.m in Sources */,
+				CB25664E26EB31CD0041425B /* RoomListTableViewCell.m in Sources */,
+				CB25666E26F1A1730041425B /* RoomInfo.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB85D40526CB489B001D90FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB85D40E26CB489B001D90FC /* ios_voiceroomsdk_quickdemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB85D41026CB489B001D90FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB85D41926CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CB85D40B26CB489B001D90FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB85D3ED26CB489A001D90FC /* ios-voiceroomsdk-quickdemo */;
+			targetProxy = CB85D40A26CB489B001D90FC /* PBXContainerItemProxy */;
+		};
+		CB85D41626CB489B001D90FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB85D3ED26CB489A001D90FC /* ios-voiceroomsdk-quickdemo */;
+			targetProxy = CB85D41526CB489B001D90FC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CB85D3FF26CB489A001D90FC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB85D40026CB489A001D90FC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CB85D41B26CB489B001D90FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CB85D41C26CB489B001D90FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CB85D41E26CB489B001D90FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5CDCC80DEDA2DDBAFF2FF5E /* Pods-ios-voiceroomsdk-quickdemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.rongcloud.ios-voiceroomsdk-quickdemo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB85D41F26CB489B001D90FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 51681FB48082B35A2EDABBFC /* Pods-ios-voiceroomsdk-quickdemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.rongcloud.ios-voiceroomsdk-quickdemo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CB85D42126CB489B001D90FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D382C62C5BB1FFA4A19A7CB5 /* Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemoTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.rongcloud.ios-voiceroomsdk-quickdemoTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ios-voiceroomsdk-quickdemo.app/ios-voiceroomsdk-quickdemo";
+			};
+			name = Debug;
+		};
+		CB85D42226CB489B001D90FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47B596A973753A71416CEBBD /* Pods-ios-voiceroomsdk-quickdemoTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemoTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.rongcloud.ios-voiceroomsdk-quickdemoTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ios-voiceroomsdk-quickdemo.app/ios-voiceroomsdk-quickdemo";
+			};
+			name = Release;
+		};
+		CB85D42426CB489B001D90FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 443A3C7AC2E5881084478DA6 /* Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemoUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.rongcloud.ios-voiceroomsdk-quickdemoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "ios-voiceroomsdk-quickdemo";
+			};
+			name = Debug;
+		};
+		CB85D42526CB489B001D90FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04A6CA16303FABEB4F0A4A8F /* Pods-ios-voiceroomsdk-quickdemo-ios-voiceroomsdk-quickdemoUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9CVMN4UZK4;
+				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemoUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.rongcloud.ios-voiceroomsdk-quickdemoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "ios-voiceroomsdk-quickdemo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CB85D3E926CB489A001D90FC /* Build configuration list for PBXProject "ios-voiceroomsdk-quickdemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB85D41B26CB489B001D90FC /* Debug */,
+				CB85D41C26CB489B001D90FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB85D41D26CB489B001D90FC /* Build configuration list for PBXNativeTarget "ios-voiceroomsdk-quickdemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB85D41E26CB489B001D90FC /* Debug */,
+				CB85D41F26CB489B001D90FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB85D42026CB489B001D90FC /* Build configuration list for PBXNativeTarget "ios-voiceroomsdk-quickdemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB85D42126CB489B001D90FC /* Debug */,
+				CB85D42226CB489B001D90FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB85D42326CB489B001D90FC /* Build configuration list for PBXNativeTarget "ios-voiceroomsdk-quickdemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB85D42426CB489B001D90FC /* Debug */,
+				CB85D42526CB489B001D90FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CB85D3E626CB489A001D90FC /* Project object */;
+}
