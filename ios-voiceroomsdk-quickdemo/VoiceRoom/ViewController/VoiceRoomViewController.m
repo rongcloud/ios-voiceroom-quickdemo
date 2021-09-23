@@ -270,6 +270,15 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [[RCVoiceRoomEngine sharedInstance] enterSeat:indexPath.row success:^{
+        [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+        [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:NO];
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        [SVProgressHUD showSuccessWithStatus:@"上麦失败"];
+    }];
+}
+
 #pragma mark - VoiceRoomLib Delegate
 
 // 房间信息初始化完毕，可在此方法进行一些初始化操作，例如进入房间房主自动上麦等
@@ -283,7 +292,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [self.collectionView reloadData];
 }
 
-// 任何房间信息都会触发此回调。
+// 任何房间信息的修改都会触发此回调。
 - (void)roomInfoDidUpdate:(RCVoiceRoomInfo *)roomInfo {
     self.roomInfo = roomInfo;
 }
