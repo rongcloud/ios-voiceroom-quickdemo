@@ -11,6 +11,7 @@
 #import "SeatInfoCollectionViewCell.h"
 #import "UIColor+Hex.h"
 #import <Masonry.h>
+#import "UserManager.h"
 
 static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @interface VoiceRoomViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, RCVoiceRoomDelegate>
@@ -28,7 +29,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 // 退出房间
 @property (nonatomic, strong) UIButton *quitButton;
-
+// 用户id label
+@property (nonatomic, strong) UILabel *userLabel;
 @end
 
 @implementation VoiceRoomViewController
@@ -82,6 +84,13 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         make.right.equalTo(self.view).inset(20);
         make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(20);
         make.size.equalTo(@(CGSizeMake(44, 44)));
+    }];
+    
+    self.userLabel.text = [NSString stringWithFormat:@"当前用户id：%@", [UserManager sharedManager].currentUser.userId];
+    [self.view addSubview:self.userLabel];
+    [self.userLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(20);
+        make.centerY.equalTo(self.quitButton);
     }];
     
     [self.view addSubview:self.collectionView];
@@ -157,6 +166,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+// 上麦
 - (void)enterSeat {
     [self showInputAlertWithTitle:@"输入麦位序号" withTextField:YES withCompletion:^(NSString* value) {
         NSUInteger seatIndex = value.integerValue;
@@ -169,6 +179,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
+// 下麦
 - (void)leaveSeat {
     [[RCVoiceRoomEngine sharedInstance] leaveSeatWithSuccess:^{
         [SVProgressHUD showSuccessWithStatus:@"下麦成功"];
@@ -177,6 +188,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
+// 锁麦
 - (void)lockSeat {
     [self showInputAlertWithTitle:@"输入麦位序号" withTextField:YES withCompletion:^(NSString * text) {
         NSUInteger seatIndex = text.integerValue;
@@ -190,6 +202,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
+// 离开房间
 - (void)quitRoom {
     [[RCVoiceRoomEngine sharedInstance] leaveRoom:^{
         [SVProgressHUD showSuccessWithStatus:@"离开房间成功"];
@@ -199,6 +212,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
+// 闭麦
 - (void)muteSeat {
     [self showInputAlertWithTitle:@"输入麦位序号" withTextField:YES withCompletion:^(NSString * text) {
         NSUInteger seatIndex = text.integerValue;
@@ -213,6 +227,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
+// 邀请上麦
 - (void)pickUserToSeat {
     [self showInputAlertWithTitle:@"输入邀请上麦的用户id" withTextField:YES withCompletion:^(NSString *text) {
         [[RCVoiceRoomEngine sharedInstance] pickUserToSeat:text success:^{
@@ -223,6 +238,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
+// 强制下麦
 - (void)kickUserOffSeat {
     [self showInputAlertWithTitle:@"输入强制下麦的用户id" withTextField:YES withCompletion:^(NSString *text) {
         [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:text success:^{
@@ -304,6 +320,15 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         [_quitButton addTarget:self action:@selector(quitRoom) forControlEvents:UIControlEventTouchUpInside];
     }
     return _quitButton;
+}
+
+- (UILabel *)userLabel {
+    if (!_userLabel) {
+        _userLabel = [[UILabel alloc] init];
+        _userLabel.font = [UIFont systemFontOfSize:14];
+        _userLabel.textColor = [UIColor whiteColor];
+    }
+    return _userLabel;
 }
 
 #pragma mark - CollectionView Delegate & DataSource
