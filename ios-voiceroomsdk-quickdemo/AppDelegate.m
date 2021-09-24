@@ -40,11 +40,11 @@
     // currentUser 代表当前用户，otherUser代表其他用户
     // 在测试时可以用两台设备测试，两台设备的currentUser和otherUser互相相反就行
     // 在开发者后台中按照readme教程申请两个token，使用两台设备分别用不同的User 运行demo。即可测试两个用户在同一个语聊房
-    User *currentUser = [[User alloc] initWithUserId:@"10000" withToken:@"Otj5s6PP6eUGTxCbOUBRrjfQzLIi6ZWmyOH+YZGsMv4=@4vsh.cn.rongnav.com;4vsh.cn.rongcfg.com"];
-    User *otherUser = [[User alloc] initWithUserId:@"10001" withToken:@"A90T43i1t+YGTxCbOUBRrjfQzLIi6ZWm7AT2TIWYIGI=@4vsh.cn.rongnav.com;4vsh.cn.rongcfg.com"];
+    User *currentUser = [[User alloc] initWithUserId:@"" withToken:@""];
+    User *otherUser = [[User alloc] initWithUserId:@"" withToken:@""];
     [UserManager sharedManager].currentUser = currentUser;
     [UserManager sharedManager].otherUser = otherUser;
-    NSString *appKey = @"pvxdm17jpwh7r";
+    NSString *appKey = @"";
     
     // 这里可以用融云IM进行初始化也可以用语聊房sdk初始化
     [self useVoiceRoomInit:appKey withUser:[UserManager sharedManager].currentUser];
