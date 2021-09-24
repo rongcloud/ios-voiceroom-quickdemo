@@ -22,6 +22,8 @@
 		CB85D40426CB489A001D90FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D40326CB489A001D90FC /* main.m */; };
 		CB85D40E26CB489B001D90FC /* ios_voiceroomsdk_quickdemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D40D26CB489B001D90FC /* ios_voiceroomsdk_quickdemoTests.m */; };
 		CB85D41926CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D41826CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m */; };
+		CB93700926FDBFB200851173 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = CB93700826FDBFB200851173 /* User.m */; };
+		CB93700D26FDC0D900851173 /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB93700C26FDC0D900851173 /* UserManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,10 @@
 		CB85D41426CB489B001D90FC /* ios-voiceroomsdk-quickdemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-voiceroomsdk-quickdemoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB85D41826CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ios_voiceroomsdk_quickdemoUITests.m; sourceTree = "<group>"; };
 		CB85D41A26CB489B001D90FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB93700726FDBFB200851173 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		CB93700826FDBFB200851173 /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		CB93700B26FDC0D900851173 /* UserManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
+		CB93700C26FDC0D900851173 /* UserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		D382C62C5BB1FFA4A19A7CB5 /* Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemoTests/Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +145,8 @@
 			children = (
 				CB25666C26F1A1730041425B /* RoomInfo.h */,
 				CB25666D26F1A1730041425B /* RoomInfo.m */,
+				CB93700726FDBFB200851173 /* User.h */,
+				CB93700826FDBFB200851173 /* User.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -204,6 +212,7 @@
 		CB85D3F026CB489A001D90FC /* ios-voiceroomsdk-quickdemo */ = {
 			isa = PBXGroup;
 			children = (
+				CB93700A26FDC0D000851173 /* Manager */,
 				CB25666F26F1BF780041425B /* Extension */,
 				CB25665326EB347F0041425B /* VoiceRoom */,
 				CBA7F3BB26DDDAB300AD716C /* RoomList */,
@@ -233,6 +242,15 @@
 				CB85D41A26CB489B001D90FC /* Info.plist */,
 			);
 			path = "ios-voiceroomsdk-quickdemoUITests";
+			sourceTree = "<group>";
+		};
+		CB93700A26FDC0D000851173 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				CB93700B26FDC0D900851173 /* UserManager.h */,
+				CB93700C26FDC0D900851173 /* UserManager.m */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		CBA7F3BB26DDDAB300AD716C /* RoomList */ = {
@@ -532,6 +550,8 @@
 			files = (
 				CB25665726EB34930041425B /* VoiceRoomViewController.m in Sources */,
 				CB25664926EB30EC0041425B /* RoomListViewController.m in Sources */,
+				CB93700D26FDC0D900851173 /* UserManager.m in Sources */,
+				CB93700926FDBFB200851173 /* User.m in Sources */,
 				CB85D3F326CB489A001D90FC /* AppDelegate.m in Sources */,
 				CB85D40426CB489A001D90FC /* main.m in Sources */,
 				CB25666A26F18FBB0041425B /* SeatInfoCollectionViewCell.m in Sources */,

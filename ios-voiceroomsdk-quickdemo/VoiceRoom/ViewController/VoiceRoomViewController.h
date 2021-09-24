@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithJoinRoomId:(NSString *)roomId;
 
-- (instancetype)initWithRoomId:(NSString *)roomId roomInfo:(RCVoiceRoomInfo *)roomInfo;
+- (instancetype)initWithRoomId:(NSString *)roomId
+                      roomInfo:(RCVoiceRoomInfo *)roomInfo;
 
 @end
 

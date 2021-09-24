@@ -103,6 +103,15 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         make.left.equalTo(self.view).offset(20);
         make.top.equalTo(self.collectionView.mas_bottom).offset(20);
     }];
+    
+    UIButton *inviteUserButton = [self actionButtonFactory:@"邀请用户上麦" withAction:@selector(pickUserToSeat)];
+    UIButton *kickUerButton = [self actionButtonFactory:@"踢用户下麦" withAction:@selector(kickUserOffSeat)];
+    UIStackView *stackView2 = [self stackViewWithViews:@[inviteUserButton, kickUerButton]];
+    [self.view addSubview:stackView2];
+    [stackView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(20);
+        make.top.equalTo(stackView1.mas_bottom).offset(20);
+    }];
 }
 
 - (UIButton *)actionButtonFactory:(NSString *)title withAction:(SEL)action {
@@ -125,16 +134,17 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     return stackView;
 }
 
-- (void)showInputAlert:(void (^)(NSInteger seatIndex))completion {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入麦位序号" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"麦位序号";
-        textField.keyboardType = UIKeyboardTypeNumberPad;
-    }];
+- (void)showInputAlertWithTitle:(NSString *)title withTextField:(BOOL)hasTextField withCompletion:(void (^)(NSString* text))completion {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    if (hasTextField) {
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.placeholder = @"请输入";
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+        }];
+    }
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *value = [[alertController textFields][0] text];
-        NSUInteger seatIndex = value.integerValue;
-        completion(seatIndex);
+        completion(value);
     }];
     [alertController addAction:confirmAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -145,7 +155,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 - (void)enterSeat {
-    [self showInputAlert:^(NSInteger seatIndex) {
+    [self showInputAlertWithTitle:@"输入麦位序号" withTextField:YES withCompletion:^(NSString* value) {
+        NSUInteger seatIndex = value.integerValue;
         [[RCVoiceRoomEngine sharedInstance] enterSeat:seatIndex success:^{
             [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
             [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:NO];
@@ -164,7 +175,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 - (void)lockSeat {
-    [self showInputAlert:^(NSInteger seatIndex) {
+    [self showInputAlertWithTitle:@"输入麦位序号" withTextField:YES withCompletion:^(NSString * text) {
+        NSUInteger seatIndex = text.integerValue;
         RCVoiceSeatInfo *seatInfo = self.seatlist[seatIndex];
         BOOL isLock = (seatInfo.status == RCSeatStatusLocking) ? NO : YES;
         [[RCVoiceRoomEngine sharedInstance] lockSeat:seatIndex lock:isLock success:^{
@@ -185,7 +197,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 - (void)muteSeat {
-    [self showInputAlert:^(NSInteger seatIndex) {
+    [self showInputAlertWithTitle:@"输入麦位序号" withTextField:YES withCompletion:^(NSString * text) {
+        NSUInteger seatIndex = text.integerValue;
         RCVoiceSeatInfo *seatInfo = self.seatlist[seatIndex];
         BOOL isMute = !seatInfo.isMuted;
         NSString *muteString = (isMute ? @"闭麦" : @"取消闭麦");
@@ -193,6 +206,26 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
             [SVProgressHUD showSuccessWithStatus:[muteString stringByAppendingString:@"成功"]];
         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
             [SVProgressHUD showSuccessWithStatus:[muteString stringByAppendingString:@"失败"]];
+        }];
+    }];
+}
+
+- (void)pickUserToSeat {
+    [self showInputAlertWithTitle:@"输入邀请上麦的用户id" withTextField:YES withCompletion:^(NSString *text) {
+        [[RCVoiceRoomEngine sharedInstance] pickUserToSeat:text success:^{
+            [SVProgressHUD showSuccessWithStatus:@"发送邀请成功"];
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            [SVProgressHUD showErrorWithStatus:@"发送邀请失败"];
+        }];
+    }];
+}
+
+- (void)kickUserOffSeat {
+    [self showInputAlertWithTitle:@"输入强制下麦的用户id" withTextField:YES withCompletion:^(NSString *text) {
+        [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:text success:^{
+            [SVProgressHUD showSuccessWithStatus:@"强制下麦发送成功"];
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            [SVProgressHUD showErrorWithStatus:@"强制下麦发送失败"];
         }];
     }];
 }
@@ -217,12 +250,24 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
+#pragma mark - Private Method
+
+- (NSInteger)emptySeatIndex {
+    for (int i = 0; i<self.seatlist.count; i++) {
+        RCVoiceSeatInfo *info = self.seatlist[i];
+        if (info.status == RCSeatStatusEmpty) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 #pragma mark - lazy Init
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(70, 70);
+        layout.itemSize = CGSizeMake(75, 75);
         layout.minimumInteritemSpacing = 15;
         layout.minimumLineSpacing = 15;
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -297,9 +342,13 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     self.roomInfo = roomInfo;
 }
 
-// 被下麦的回调
+// 收到被下麦的回调
 - (void)kickSeatDidReceive:(NSUInteger)seatIndex {
-    
+    [[RCVoiceRoomEngine sharedInstance] leaveSeatWithSuccess:^{
+        [SVProgressHUD showSuccessWithStatus:@"被踢下麦"];
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        [SVProgressHUD showErrorWithStatus:@"被踢下麦失败"];
+    }];
 }
 
 // 聊天室消息回调
@@ -309,7 +358,18 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 // 被抱麦的回调，userId为邀请你上麦的用户id
 - (void)pickSeatDidReceiveBy:(nonnull NSString *)userId {
-    
+    [self showInputAlertWithTitle:[NSString stringWithFormat:@"收到来自用户%@的上麦邀请，是否同意", userId] withTextField:NO withCompletion:^(NSString *text) {
+        NSInteger emptyIndex = [self emptySeatIndex];
+        if (emptyIndex >= 0) {
+            [[RCVoiceRoomEngine sharedInstance] enterSeat:emptyIndex success:^{
+                [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+            } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                [SVProgressHUD showErrorWithStatus:@"上麦失败"];
+            }];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"没有空余麦位"];
+        }
+    }];
 }
 
 // 你发出的连麦申请被接受了。这时可以调用上麦接口直接上麦
