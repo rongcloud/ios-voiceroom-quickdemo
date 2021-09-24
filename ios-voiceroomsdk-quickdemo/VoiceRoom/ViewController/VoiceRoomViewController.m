@@ -22,7 +22,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @property (nonatomic, copy) RCVoiceRoomInfo *roomInfo;
 // 根据seatInfoDidUpdate 获取的最新麦位信息
 @property (nonatomic, copy) NSArray<RCVoiceSeatInfo *> *seatlist;
-
 // 用来显示麦位的collectionView
 @property (nonatomic, strong) UICollectionView *collectionView;
 // 背景
@@ -143,8 +142,12 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         }];
     }
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *value = [[alertController textFields][0] text];
-        completion(value);
+        if (hasTextField) {
+            NSString *value = [[alertController textFields][0] text];
+            completion(value);
+        } else {
+            completion(nil);
+        }
     }];
     [alertController addAction:confirmAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

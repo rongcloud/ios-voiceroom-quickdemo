@@ -89,6 +89,8 @@ NSString * const roomCellIdentifier = @"RoomListTableViewCell";
         NSString *roomId = [[alertController textFields][0] text];
         if (roomId.length > 0) {
             // 创建语聊房实例
+            // 创建房间必须初始化房间信息，设置房间名称和麦位数量。
+            // 否则无法创建成功
             RCVoiceRoomInfo *roomInfo = [[RCVoiceRoomInfo alloc] init];
             roomInfo.roomName = roomName;
             // 设置9个麦位
@@ -113,8 +115,6 @@ NSString * const roomCellIdentifier = @"RoomListTableViewCell";
     }];
     [alertController addAction:cancelAction];
     [self presentViewController:alertController animated:YES completion:nil];
-    // 创建房间必须初始化房间信息，设置房间名臣和麦位数量。
-    // 否则无法创建成功
     
 }
 
