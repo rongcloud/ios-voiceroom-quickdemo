@@ -54,13 +54,13 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [RCVoiceRoomEngine.sharedInstance setDelegate:self];
     if (self.isCreate) {
         [self createVoiceRoom:_roomId info:_roomInfo];
     } else {
         [self joinVoiceRoom:_roomId];
     }
     // 设置语聊房代理
-    [RCVoiceRoomEngine.sharedInstance setDelegate:self];
     [self buildLayout];
 }
 
@@ -172,7 +172,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         NSUInteger seatIndex = value.integerValue;
         [[RCVoiceRoomEngine sharedInstance] enterSeat:seatIndex success:^{
             [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
-            [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:NO];
         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
             [SVProgressHUD showSuccessWithStatus:@"上麦失败"];
         }];
@@ -346,7 +345,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [[RCVoiceRoomEngine sharedInstance] enterSeat:indexPath.row success:^{
         [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
-        [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:NO];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:@"上麦失败"];
     }];

@@ -13,6 +13,7 @@
 #import "RoomInfo.h"
 #import "UIColor+Hex.h"
 #import <SVProgressHUD.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface RoomListViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -22,7 +23,7 @@
 
 @end
 
-NSString * const roomCellIdentifier = @"RoomListTableViewCell";
+static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 @implementation RoomListViewController
 
 - (void)viewDidLoad {
@@ -33,6 +34,15 @@ NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+        if (granted) {
+            NSLog(@"get micphone access");
+        }
+    }];
 }
 
 - (void)buildLayout {

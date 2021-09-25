@@ -26,11 +26,12 @@
  正式环境中，请从自己的服务器通过接口获取
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [self setupThirdParty];
+
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     RoomListViewController *listVC = [[RoomListViewController alloc] init];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:listVC];
     [self.window makeKeyAndVisible];
+    [self setupThirdParty];
     return YES;
 }
 
@@ -40,10 +41,11 @@
     // currentUser 代表当前用户
     // 在测试时可以用两台设备测试，两台设备的使用不同的用户初始化
     // 可在开发者后台，通过API调用生成用户和token
-   
-    User *currentUser = [[User alloc] initWithUserId:@"" withToken:@""];
+    // 10001, A90T43i1t+YGTxCbOUBRrqyM8hFZBgmY7MWg7Xc7BjE=@4vsh.cn.rongnav.com;4vsh.cn.rongcfg.com
+   // 10002, /EBrzvexfz4GTxCbOUBRrpFm452lCdEq4BVWfqzL9LQ=@4vsh.cn.rongnav.com;4vsh.cn.rongcfg.com
+    User *currentUser = [[User alloc] initWithUserId:@"10001" withToken:@"A90T43i1t+YGTxCbOUBRrqyM8hFZBgmY7MWg7Xc7BjE=@4vsh.cn.rongnav.com;4vsh.cn.rongcfg.com"];
     [UserManager sharedManager].currentUser = currentUser;
-    NSString *appKey = @"";
+    NSString *appKey = @"pvxdm17jpwh7r";
     
     // 这里可以用融云IM进行初始化也可以用语聊房sdk初始化
     [self useVoiceRoomInit:appKey withUser:[UserManager sharedManager].currentUser];
