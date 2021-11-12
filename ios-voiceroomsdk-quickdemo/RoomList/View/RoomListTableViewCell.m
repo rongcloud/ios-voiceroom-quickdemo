@@ -77,9 +77,9 @@
     return _container;
 }
 
-- (void)updateCell:(RoomInfo *)info {
-    self.nameLabel.text = [@"房间名称：" stringByAppendingString:info.roomInfo.roomName];
-    self.roomIdLabel.text = [@"房间ID：" stringByAppendingString:info.roomId];
+- (void)updateCellWithName:(NSString *)roomName roomId:(NSString *)roomId; {
+    self.nameLabel.text = [@"房间名称：" stringByAppendingString:roomName];
+    self.roomIdLabel.text = [@"房间ID：" stringByAppendingString:roomId];
 }
 
 @end

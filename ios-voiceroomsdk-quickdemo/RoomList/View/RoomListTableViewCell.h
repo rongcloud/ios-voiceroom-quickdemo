@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RoomListTableViewCell : UITableViewCell
 
-- (void)updateCell:(RoomInfo *)info;
+- (void)updateCellWithName:(NSString *)roomName roomId:(NSString *)roomId;
 
 @end
 

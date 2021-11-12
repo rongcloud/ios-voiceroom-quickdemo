@@ -24,6 +24,19 @@
 		CB85D41926CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D41826CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m */; };
 		CB93700926FDBFB200851173 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = CB93700826FDBFB200851173 /* User.m */; };
 		CB93700D26FDC0D900851173 /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB93700C26FDC0D900851173 /* UserManager.m */; };
+		DC317FB1272FE3B10075D7F0 /* WebService.m in Sources */ = {isa = PBXBuildFile; fileRef = DC317FAD272FE3B10075D7F0 /* WebService.m */; };
+		DC317FB8272FE9C90075D7F0 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC317FB6272FE9C90075D7F0 /* LoginViewController.m */; };
+		DC317FBB272FE9EC0075D7F0 /* LoginResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DC317FB9272FE9EC0075D7F0 /* LoginResponse.m */; };
+		DC78442E2732250900398038 /* RoomUserListResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DC78442C2732250900398038 /* RoomUserListResponse.m */; };
+		DC784433273225A400398038 /* UserListView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC78442F273225A400398038 /* UserListView.m */; };
+		DC784434273225A400398038 /* UserListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC784432273225A400398038 /* UserListCell.m */; };
+		DC838B2F2734E69F0068D33D /* UIViewController+CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC838B2E2734E69F0068D33D /* UIViewController+CurrentViewController.m */; };
+		DCDA63A82730CBBF00FD3335 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DCDA63AA2730CBBF00FD3335 /* Localizable.strings */; };
+		DCDA63AE2730D1E000FD3335 /* LaunchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63AD2730D1E000FD3335 /* LaunchManager.m */; };
+		DCDA63B12730E71500FD3335 /* RoomListResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B02730E71500FD3335 /* RoomListResponse.m */; };
+		DCDA63B42730E7BF00FD3335 /* NSArray+VRSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B32730E7BF00FD3335 /* NSArray+VRSModel.m */; };
+		DCDA63B72731117400FD3335 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B62731117400FD3335 /* NSString+MD5.m */; };
+		DCDA63BA273112E600FD3335 /* CreateRoomResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B9273112E600FD3335 /* CreateRoomResponse.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +108,38 @@
 		CB93700B26FDC0D900851173 /* UserManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
 		CB93700C26FDC0D900851173 /* UserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		D382C62C5BB1FFA4A19A7CB5 /* Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemoTests/Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DC317FAD272FE3B10075D7F0 /* WebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebService.m; sourceTree = "<group>"; };
+		DC317FAE272FE3B10075D7F0 /* NetworkConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConst.h; sourceTree = "<group>"; };
+		DC317FAF272FE3B10075D7F0 /* StatusCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusCode.h; sourceTree = "<group>"; };
+		DC317FB0272FE3B10075D7F0 /* WebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebService.h; sourceTree = "<group>"; };
+		DC317FB2272FE5530075D7F0 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		DC317FB3272FE5D80075D7F0 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		DC317FB4272FE5D80075D7F0 /* VRSDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRSDefine.h; sourceTree = "<group>"; };
+		DC317FB6272FE9C90075D7F0 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		DC317FB7272FE9C90075D7F0 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		DC317FB9272FE9EC0075D7F0 /* LoginResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginResponse.m; sourceTree = "<group>"; };
+		DC317FBA272FE9EC0075D7F0 /* LoginResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginResponse.h; sourceTree = "<group>"; };
+		DC78442C2732250900398038 /* RoomUserListResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomUserListResponse.m; sourceTree = "<group>"; };
+		DC78442D2732250900398038 /* RoomUserListResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomUserListResponse.h; sourceTree = "<group>"; };
+		DC78442F273225A400398038 /* UserListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserListView.m; sourceTree = "<group>"; };
+		DC784430273225A400398038 /* UserListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserListView.h; sourceTree = "<group>"; };
+		DC784431273225A400398038 /* UserListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserListCell.h; sourceTree = "<group>"; };
+		DC784432273225A400398038 /* UserListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserListCell.m; sourceTree = "<group>"; };
+		DC838B2D2734E69F0068D33D /* UIViewController+CurrentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+CurrentViewController.h"; sourceTree = "<group>"; };
+		DC838B2E2734E69F0068D33D /* UIViewController+CurrentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+CurrentViewController.m"; sourceTree = "<group>"; };
+		DCDA63A52730CB8C00FD3335 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		DCDA63A92730CBBF00FD3335 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DCDA63AB2730CBC200FD3335 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		DCDA63AC2730D1E000FD3335 /* LaunchManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaunchManager.h; sourceTree = "<group>"; };
+		DCDA63AD2730D1E000FD3335 /* LaunchManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LaunchManager.m; sourceTree = "<group>"; };
+		DCDA63AF2730E71500FD3335 /* RoomListResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomListResponse.h; sourceTree = "<group>"; };
+		DCDA63B02730E71500FD3335 /* RoomListResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomListResponse.m; sourceTree = "<group>"; };
+		DCDA63B22730E7BF00FD3335 /* NSArray+VRSModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+VRSModel.h"; sourceTree = "<group>"; };
+		DCDA63B32730E7BF00FD3335 /* NSArray+VRSModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VRSModel.m"; sourceTree = "<group>"; };
+		DCDA63B52731117400FD3335 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		DCDA63B62731117400FD3335 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
+		DCDA63B8273112E600FD3335 /* CreateRoomResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateRoomResponse.h; sourceTree = "<group>"; };
+		DCDA63B9273112E600FD3335 /* CreateRoomResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateRoomResponse.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,10 +201,12 @@
 		CB25664F26EB32A30041425B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DCDA63AF2730E71500FD3335 /* RoomListResponse.h */,
+				DCDA63B02730E71500FD3335 /* RoomListResponse.m */,
+				DCDA63B8273112E600FD3335 /* CreateRoomResponse.h */,
+				DCDA63B9273112E600FD3335 /* CreateRoomResponse.m */,
 				CB25666C26F1A1730041425B /* RoomInfo.h */,
 				CB25666D26F1A1730041425B /* RoomInfo.m */,
-				CB93700726FDBFB200851173 /* User.h */,
-				CB93700826FDBFB200851173 /* User.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -167,6 +214,7 @@
 		CB25665326EB347F0041425B /* VoiceRoom */ = {
 			isa = PBXGroup;
 			children = (
+				DC78442B2732250900398038 /* Model */,
 				CB25666726F18FAB0041425B /* View */,
 				CB25665426EB34880041425B /* ViewController */,
 			);
@@ -187,6 +235,10 @@
 			children = (
 				CB25666826F18FBB0041425B /* SeatInfoCollectionViewCell.h */,
 				CB25666926F18FBB0041425B /* SeatInfoCollectionViewCell.m */,
+				DC784431273225A400398038 /* UserListCell.h */,
+				DC784432273225A400398038 /* UserListCell.m */,
+				DC784430273225A400398038 /* UserListView.h */,
+				DC78442F273225A400398038 /* UserListView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -194,8 +246,14 @@
 		CB25666F26F1BF780041425B /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DCDA63B52731117400FD3335 /* NSString+MD5.h */,
+				DCDA63B62731117400FD3335 /* NSString+MD5.m */,
 				CB25667426F1CF110041425B /* UIColor+Hex.h */,
 				CB25667526F1CF110041425B /* UIColor+Hex.m */,
+				DCDA63B22730E7BF00FD3335 /* NSArray+VRSModel.h */,
+				DCDA63B32730E7BF00FD3335 /* NSArray+VRSModel.m */,
+				DC838B2D2734E69F0068D33D /* UIViewController+CurrentViewController.h */,
+				DC838B2E2734E69F0068D33D /* UIViewController+CurrentViewController.m */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -225,16 +283,23 @@
 		CB85D3F026CB489A001D90FC /* ios-voiceroomsdk-quickdemo */ = {
 			isa = PBXGroup;
 			children = (
-				CB93700A26FDC0D000851173 /* Manager */,
 				CB25666F26F1BF780041425B /* Extension */,
+				DC317FAC272FE3B10075D7F0 /* Network */,
+				CB93700A26FDC0D000851173 /* Manager */,
 				CB25665326EB347F0041425B /* VoiceRoom */,
 				CBA7F3BB26DDDAB300AD716C /* RoomList */,
+				DC317FB5272FE9C90075D7F0 /* Login */,
+				DC1BBB822733B0A800109731 /* View */,
 				CB85D3F126CB489A001D90FC /* AppDelegate.h */,
 				CB85D3F226CB489A001D90FC /* AppDelegate.m */,
+				DC317FB4272FE5D80075D7F0 /* VRSDefine.h */,
+				DC317FB3272FE5D80075D7F0 /* Device.h */,
+				DC317FB2272FE5530075D7F0 /* PrefixHeader.pch */,
 				CB85D3FD26CB489A001D90FC /* Assets.xcassets */,
 				CB85D3FF26CB489A001D90FC /* LaunchScreen.storyboard */,
 				CB85D40226CB489A001D90FC /* Info.plist */,
 				CB85D40326CB489A001D90FC /* main.m */,
+				DCDA63AA2730CBBF00FD3335 /* Localizable.strings */,
 			);
 			path = "ios-voiceroomsdk-quickdemo";
 			sourceTree = "<group>";
@@ -260,8 +325,9 @@
 		CB93700A26FDC0D000851173 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				CB93700B26FDC0D900851173 /* UserManager.h */,
-				CB93700C26FDC0D900851173 /* UserManager.m */,
+				DC1BBB802733B06700109731 /* User */,
+				DCDA63AC2730D1E000FD3335 /* LaunchManager.h */,
+				DCDA63AD2730D1E000FD3335 /* LaunchManager.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -287,6 +353,55 @@
 				47B596A973753A71416CEBBD /* Pods-ios-voiceroomsdk-quickdemoTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DC1BBB802733B06700109731 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				CB93700726FDBFB200851173 /* User.h */,
+				CB93700826FDBFB200851173 /* User.m */,
+				CB93700B26FDC0D900851173 /* UserManager.h */,
+				CB93700C26FDC0D900851173 /* UserManager.m */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		DC1BBB822733B0A800109731 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DC317FAC272FE3B10075D7F0 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				DC317FB0272FE3B10075D7F0 /* WebService.h */,
+				DC317FAD272FE3B10075D7F0 /* WebService.m */,
+				DC317FAE272FE3B10075D7F0 /* NetworkConst.h */,
+				DC317FAF272FE3B10075D7F0 /* StatusCode.h */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		DC317FB5272FE9C90075D7F0 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				DC317FB7272FE9C90075D7F0 /* LoginViewController.h */,
+				DC317FB6272FE9C90075D7F0 /* LoginViewController.m */,
+				DC317FBA272FE9EC0075D7F0 /* LoginResponse.h */,
+				DC317FB9272FE9EC0075D7F0 /* LoginResponse.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		DC78442B2732250900398038 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC78442D2732250900398038 /* RoomUserListResponse.h */,
+				DC78442C2732250900398038 /* RoomUserListResponse.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -381,6 +496,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = CB85D3E526CB489A001D90FC;
 			productRefGroup = CB85D3EF26CB489A001D90FC /* Products */;
@@ -400,6 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB85D40126CB489A001D90FC /* LaunchScreen.storyboard in Resources */,
+				DCDA63A82730CBBF00FD3335 /* Localizable.strings in Resources */,
 				CB85D3FE26CB489A001D90FC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,16 +679,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCDA63AE2730D1E000FD3335 /* LaunchManager.m in Sources */,
+				DC317FB1272FE3B10075D7F0 /* WebService.m in Sources */,
 				CB25665726EB34930041425B /* VoiceRoomViewController.m in Sources */,
 				CB25664926EB30EC0041425B /* RoomListViewController.m in Sources */,
+				DCDA63B72731117400FD3335 /* NSString+MD5.m in Sources */,
+				DCDA63B42730E7BF00FD3335 /* NSArray+VRSModel.m in Sources */,
 				CB93700D26FDC0D900851173 /* UserManager.m in Sources */,
 				CB93700926FDBFB200851173 /* User.m in Sources */,
 				CB85D3F326CB489A001D90FC /* AppDelegate.m in Sources */,
 				CB85D40426CB489A001D90FC /* main.m in Sources */,
 				CB25666A26F18FBB0041425B /* SeatInfoCollectionViewCell.m in Sources */,
+				DC317FB8272FE9C90075D7F0 /* LoginViewController.m in Sources */,
+				DC838B2F2734E69F0068D33D /* UIViewController+CurrentViewController.m in Sources */,
 				CB25667626F1CF110041425B /* UIColor+Hex.m in Sources */,
+				DCDA63B12730E71500FD3335 /* RoomListResponse.m in Sources */,
 				CB25664E26EB31CD0041425B /* RoomListTableViewCell.m in Sources */,
+				DC784433273225A400398038 /* UserListView.m in Sources */,
+				DC78442E2732250900398038 /* RoomUserListResponse.m in Sources */,
+				DCDA63BA273112E600FD3335 /* CreateRoomResponse.m in Sources */,
+				DC317FBB272FE9EC0075D7F0 /* LoginResponse.m in Sources */,
 				CB25666E26F1A1730041425B /* RoomInfo.m in Sources */,
+				DC784434273225A400398038 /* UserListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,8 +740,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				CB85D40026CB489A001D90FC /* Base */,
+				DCDA63A52730CB8C00FD3335 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		DCDA63AA2730CBBF00FD3335 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCDA63A92730CBBF00FD3335 /* en */,
+				DCDA63AB2730CBC200FD3335 /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -622,6 +761,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -681,6 +821,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -737,8 +878,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MFPSD4U66R;
+				DEVELOPMENT_TEAM = TBA8VYLG4P;
 				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/ios-voiceroomsdk-quickdemo/PrefixHeader.pch";
 				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -758,8 +901,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MFPSD4U66R;
+				DEVELOPMENT_TEAM = TBA8VYLG4P;
 				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/ios-voiceroomsdk-quickdemo/PrefixHeader.pch";
 				INFOPLIST_FILE = "ios-voiceroomsdk-quickdemo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -1,0 +1,63 @@
+/* 
+  Localizable.strings
+  ios-voiceroomsdk-quickdemo
+
+  Created by xuefeng on 2021/11/2.
+  
+*/
+"login_phone_num_input_placeholder" = "请输入电话号码";
+"login_button_title" = "登录";
+"login_success_msg" = "登录成功";
+"login_fail_msg" = "登录失败";
+"network_time_out" = "网络连接超时";
+"network_error" = "网络错误";
+"create_room_fail" = "创建房间失败";
+"host_push_stream" = "主播推流失败";
+"close" = "关闭";
+"create_room_success" = "房间创建成功";
+"create_join_success" = "房间加入成功";
+"create_join_fail" = "房间加入失败";
+"create_leave_success" = "房间离开成功";
+"create_leave_fail" = "房间离开失败";
+"live_request_success" = "申请连麦成功";
+"live_request_fail" = "申请连麦失败";
+"live_cancel_request_success" = "取消连麦申请成功";
+"live_cancel_request_fail" = "取消连麦申请失败";
+"live_invite_success" = "邀请发送成功";
+"live_invite_fail" = "邀请发送失败";
+"live_fetch_user_list_success" = "获取用户列表成功";
+"live_fetch_user_list_fail" = "获取用户列表失败";
+"live_fetch_request_list_success" = "获取连麦申请用户列表成功";
+"live_fetch_request_user_list_fail" = "获取连麦申请用户列表失败";
+"live_fetch_invite_list_success" = "获取邀请用户列表成功";
+"live_fetch_invite_user_list_fail" = "获取邀请用户列表失败";
+"live_end" = "直播结束";
+"live_room_delete_fail" = "Engine 房间删除失败";
+"live_audience_request_accept_success" = "同意观众: %@ 的连麦申请";
+"live_audience_request_accept_fail" = "同意观众连麦请求失败 code：%ld";
+"live_audience_request_reject_success" = "拒绝观众: %@ 的连麦申请";
+"live_audience_request_reject_fail" = "拒绝观众连麦请求失败 code：%ld";
+"live_kick_audience_success" = "踢出观众: %@";
+"live_kick_audience_fail" = "踢出观众失败 code：%ld";
+"live_invite_audience_success" = "邀请观众: %@";
+"live_invite_audience_fail" = "邀请观众失败 code：%ld";
+"live_invite_cancel_success" = "取消邀请成功";
+"live_invite_cancel_fail" = "取消邀请失败 code：%ld";
+"live_request_list_changed" = "上麦申请列表有变化，点击上麦申请查看";
+"live_audience_accept_invite" = "用户%@同意了您的邀请";
+"live_audience_reject_invite" = "用户%@拒绝了您的邀请";
+"live_start_boardcast" = "连麦开始";
+"live_stop_boardcast" = "结束直播";
+"live_user_click" = "连麦中用户%@的区域被点击了";
+"live_request_list_empty" = "当前没有观众申请连麦";
+"live_user_list_empty" = "当前直播间没有观众";
+"live_invite_list_empty" = "当前没有邀请用户";
+"live_receive_host_invite" = "收到主播的邀请";
+"reject" = "拒绝";
+"accept" = "同意";
+"live_reject_invite_fail" = "拒绝失败 code:%ld";
+"live_accept_invite_fail" = "接受邀请失败 code:%ld";
+"live_kicked_by_user" = "您已被用户%@踢出直播间";
+"live_host_accept_request" = "主播已经同意上麦申请";
+"live_host_reject_request" = "主播已经拒绝上麦申请";
+"live_finish_live_fail" = "结束连麦失败 code: %ld";

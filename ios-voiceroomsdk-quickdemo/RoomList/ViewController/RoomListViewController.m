@@ -14,11 +14,14 @@
 #import "UIColor+Hex.h"
 #import <SVProgressHUD.h>
 #import <AVFoundation/AVFoundation.h>
+#import "RoomListResponse.h"
+#import "NSString+MD5.h"
+#import "CreateRoomResponse.h"
 
 @interface RoomListViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray<RoomInfo *> *roomlist;
+@property (nonatomic, strong) NSMutableArray<RoomListRoom *> *roomlist;
 @property (nonatomic, strong) UIBarButtonItem *createRoomButton;
 
 @end
@@ -29,6 +32,19 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self buildLayout];
+    [WebService roomListWithSize:20 page:0 type:RoomTypeVoice responseClass:[RoomListResponse class] success:^(id  _Nullable responseObject) {
+        RoomListResponse *res = (RoomListResponse *)responseObject;
+        if (res.code.integerValue == StatusCodeSuccess) {
+            [self.roomlist addObjectsFromArray:res.data.rooms];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        } else {
+            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"房间数据获取失败 code:%d",res.code.intValue]];
+        }
+    } failure:^(NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"房间数据获取失败 code:%ld",(long)error.code]];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -67,86 +83,68 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 #pragma mark - Private method
 - (void)handleCreateRoom:(UIBarButtonItem *)sender {
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle: UIAlertControllerStyleActionSheet];
-    UIAlertAction *joinAction = [UIAlertAction actionWithTitle:@"加入房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self joinRoom];
-    }];
+    WeakSelf(self)
+//    UIAlertAction *joinAction = [UIAlertAction actionWithTitle:@"创建PK房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        StrongSelf(weakSelf)
+//        [strongSelf pushVoiceRoomControllerWithType:YES];
+//    }];
     UIAlertAction *createAction = [UIAlertAction actionWithTitle:@"创建房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self createRoom];
+        StrongSelf(weakSelf)
+        [strongSelf pushVoiceRoomControllerWithType:NO];
     }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [actionSheet addAction:joinAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+//    [actionSheet addAction:joinAction];
     [actionSheet addAction:createAction];
     [actionSheet addAction:cancelAction];
     [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
-- (void)createRoom {
-    // 根据时间创建一个房间名称
+- (NSString *)generateRoomName {
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setDateStyle:NSDateFormatterFullStyle];
     NSString *dateString = [formatter stringFromDate:date];
-    NSString *roomName = [NSString stringWithFormat:@"%@%@", @"测试房间", dateString];
-    
-    // 输入一个房间ID
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"加入房间" message:@"输入房间ID" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"房间ID";
-    }];
-    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *roomId = [[alertController textFields][0] text];
-        if (roomId.length > 0) {
-            // 创建语聊房实例
-            // 创建房间必须初始化房间信息，设置房间名称和麦位数量。
-            // 否则无法创建成功
-            RCVoiceRoomInfo *roomInfo = [[RCVoiceRoomInfo alloc] init];
-            roomInfo.roomName = roomName;
-            // 设置9个麦位
-            roomInfo.seatCount = 9;
-            // 进入语聊房
-            VoiceRoomViewController *vc = [[VoiceRoomViewController alloc] initWithRoomId:roomId roomInfo:roomInfo];
-            [self.navigationController pushViewController:vc animated:YES];
-            
-            // 储存语聊房到本地，主要是便于UI展示
-            RoomInfo *info = [[RoomInfo alloc] init];
-            info.roomId = roomId;
-            info.roomInfo = roomInfo;
-            [self.roomlist addObject:info];
-            [self.tableView reloadData];
-        } else {
-            [SVProgressHUD showErrorWithStatus:@"请输入数字"];
-        }
-    }];
-    [alertController addAction:confirmAction];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"Canelled");
-    }];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-    
+    NSString *roomName = [NSString stringWithFormat:@"%@ %@",UserManager.userName,dateString];
+    return roomName;
 }
 
-- (void)joinRoom {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"加入房间" message:@"输入房间ID" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"房间ID";
-    }];
-    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *roomId = [[alertController textFields][0] text];
-        if (roomId.length > 0) {
-            VoiceRoomViewController *vc = [[VoiceRoomViewController alloc] initWithJoinRoomId:roomId];
-            [self.navigationController pushViewController:vc animated:YES];
+- (void)pushVoiceRoomControllerWithType:(BOOL)isPK {
+    NSString *roomName = [self generateRoomName];
+    NSString *password = [@"password" vrs_md5];
+    NSString *imageUrl = @"https://img2.baidu.com/it/u=2842763149,821152972&fm=26&fmt=auto";
+    [WebService createRoomWithName:roomName isPrivate:0 backgroundUrl:imageUrl themePictureUrl:imageUrl password:password type:RoomTypeVoice kv:@[] responseClass:[CreateRoomResponse class] success:^(id  _Nullable responseObject) {
+        if (responseObject) {
+            Log(@"network create room success")
+            CreateRoomResponse *res = (CreateRoomResponse *)responseObject;
+            if (res.data != nil) {
+                [SVProgressHUD showSuccessWithStatus:LocalizedString(@"create_room_success")];
+                UIViewController *vc = [self createRoomWithType:isPK roomName:roomName roomId:res.data.roomId];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            } else {
+                Log(@"network logic error code: %ld",(long)res.code);
+                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@ code: %ld",LocalizedString(@"network_error"),res.code]];
+            }
+
         }
+    } failure:^(NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@ code: %ld",LocalizedString(@"create_room_fail"),(long)error.code]];
     }];
-    [alertController addAction:confirmAction];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"Canelled");
-    }];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
+
+- (UIViewController *)createRoomWithType:(BOOL)isPK roomName:(NSString *)roomName roomId:(NSString *)roomId {
+    RCVoiceRoomInfo *roomInfo = [[RCVoiceRoomInfo alloc] init];
+    roomInfo.roomName = roomName;
+    // 设置9个麦位
+    roomInfo.seatCount = isPK ? 2 : 9;
+    //非自由麦，上麦需要申请
+    roomInfo.isFreeEnterSeat = NO;
+    // 进入语聊房
+    VoiceRoomViewController *vc;
+    vc = [[VoiceRoomViewController alloc] initWithRoomId:roomId roomInfo:roomInfo];
+    return vc;
+}
+
 
 #pragma mark - UITableView DataSource
 
@@ -156,7 +154,8 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RoomListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:roomCellIdentifier];
-    [cell updateCell:self.roomlist[indexPath.row]];
+    RoomListRoom *room = self.roomlist[indexPath.row];
+    [cell updateCellWithName:room.roomName roomId:room.roomId];
     return cell;
 }
 

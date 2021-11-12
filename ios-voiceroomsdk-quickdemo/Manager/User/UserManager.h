@@ -12,10 +12,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UserManager : NSObject
 
-@property (nonatomic, strong) User *currentUser;
+@property (nonatomic, strong, readonly) User *currentUser;
 
 + (UserManager *)sharedManager;
 
++ (BOOL)isLogin;
+
++ (NSString *)userId;
+
++ (NSString *)token;
+
++ (NSString *)userName;
+
++ (NSString *)authorization;
 @end
 
 NS_ASSUME_NONNULL_END

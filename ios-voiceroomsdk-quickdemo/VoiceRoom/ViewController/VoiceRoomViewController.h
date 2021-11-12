@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <RCVoiceRoomLib/RCVoiceRoomLib.h>
+@class UserListView;
 
 NS_ASSUME_NONNULL_BEGIN
 
