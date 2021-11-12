@@ -8,7 +8,7 @@
    1. 此项服务会提供和AppId绑定的10名测试人员资格，您需联系销售人员获取相应的 BusinessToken, 
    2. 成功获取到 BusinessToken 后，替换 VRSDefine.h 中定义的 BusinessToken
    
-![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/business_token.png)
+![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/business_token.png)
 
 
 ## 运行Demo
@@ -18,19 +18,19 @@
 1. 登录
    - 手机号登录
    
-![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/login.jpg)
+![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/login.jpg)
 
 ## 房间创建
 
 1. 创建房间
    * 点击视图右上角+号
    
-   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/create.jpg)
+   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/create.jpg)
    
 2. 加入房间
    * 点击首页列表
    
-   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/list.jpg)
+   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/list.jpg)
 
 ## 进入房间
 
@@ -63,9 +63,9 @@
     - 禁用
     - 开启
 
-   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/host.jpg)
+   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/host.jpg)
    
-   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/audience.jpg)
+   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/audience.jpg)
 
 ## 麦位管理
 
@@ -89,9 +89,9 @@
 
   <img src="/Users/xuefeng/Desktop/aduience_sheet.jpg" alt="aduience_sheet" style="zoom:25%;" />
   
-  ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/host_sheet.jpg)
+  ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/host_sheet.jpg)
      
-  ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/master/img/aduience_sheet.jpg)
+  ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/aduience_sheet.jpg)
 
 更多细节可参照示例代码。
 
