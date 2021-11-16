@@ -2,11 +2,11 @@
 
 ## 前置条件
 
-1. 申请融云AppKey
-2. 在开发者后台开通 `音视频直播`
-3. 申请  `BusinessToken`
-   1. 此项服务会提供和AppId绑定的10名测试人员资格，点击此处 [获取BusinessToken](https://rcrtc-api.rongcloud.net/code) 
-   2. 成功获取到 BusinessToken 后，替换 VRSDefine.h 中定义的 BusinessToken
+1. 为了方便您快速运行quickdemo，我们为您预置了融云 appkey 和 对应的测试服务器url，您不需要自己部署测试服务器即可运行。
+2. 申请  `BusinessToken`
+   1. BusinessToken 主要是防止滥用 quickdemo 里的测试appKey，我们为接口做了限制，一个 BusinessToken 最多可以支持10个用户注册，20天使用时长。点击此处 [获取BusinessToken](https://rcrtc-api.rongcloud.net/code)
+   2. 过期后您的注册用户会自动移除，想继续使用 quickdemo 需要您重新申请 BusinessToken
+   3. 成功获取到 BusinessToken 后，替换 VRSDefine.h 中定义的 BusinessToken
    
 ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/business_token.png)
 
