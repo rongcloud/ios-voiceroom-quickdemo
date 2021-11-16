@@ -10,6 +10,7 @@ static NSString *const LoginSuccessNotification = @"LoginSuccessNotificationIden
 //融云官网申请的 app key
 #define AppKey  @"pvxdm17jpw7ar"
 
+//请前往 https://rcrtc-api.rongcloud.net/code 获取 BusinessToken
 #define BusinessToken  <#BusinessToken#>
 
 //主色调

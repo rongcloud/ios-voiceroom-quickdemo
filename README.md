@@ -5,7 +5,7 @@
 1. 申请融云AppKey
 2. 在开发者后台开通 `音视频直播`
 3. 申请  `BusinessToken`
-   1. 此项服务会提供和AppId绑定的10名测试人员资格，您需联系销售人员获取相应的 BusinessToken, 
+   1. 此项服务会提供和AppId绑定的10名测试人员资格，点击此处 [获取BusinessToken](https://rcrtc-api.rongcloud.net/code) 
    2. 成功获取到 BusinessToken 后，替换 VRSDefine.h 中定义的 BusinessToken
    
 ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/business_token.png)
@@ -18,6 +18,7 @@
 1. 登录
    - 手机号登录
    
+
 ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/login.jpg)
 
 ## 房间创建
@@ -64,7 +65,7 @@
     - 开启
 
    ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/host.jpg)
-   
+  
    ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/audience.jpg)
 
 ## 麦位管理
@@ -84,13 +85,9 @@
   - 上麦（向主播发出上麦申请）
   - 下麦
   - 闭麦  (关闭自己的声音)
-
-  <img src="/Users/xuefeng/Desktop/host_sheet.jpg" alt="host_sheet" style="zoom:25%;" />
-
-  <img src="/Users/xuefeng/Desktop/aduience_sheet.jpg" alt="aduience_sheet" style="zoom:25%;" />
   
   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/host_sheet.jpg)
-     
+  
   ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/blob/main/img/aduience_sheet.jpg)
 
 更多细节可参照示例代码。

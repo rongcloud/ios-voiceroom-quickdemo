@@ -12,8 +12,7 @@
 static NSDictionary * _header() {
     NSString *businessToken = BusinessToken;
     if (businessToken == nil || businessToken.length == 0) {
-        Log(@"businessToken must be nonnull");
-        assert(0);
+        NSCAssert(NO, @"当前 BusinessToken 不存在或者为空，请前往 https://rcrtc-api.rongcloud.net/code 获取 BusinessToken");
     }
     return @{
         @"Content-Type":@"application/json;charset=UTF-8",
