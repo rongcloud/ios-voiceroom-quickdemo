@@ -91,6 +91,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }
     
     [self updateRoomOnlineStatus];
+    [[RCVoiceRoomEngine sharedInstance] notifyVoiceRoom:@"refreshBackgroundImage" content:@""];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
