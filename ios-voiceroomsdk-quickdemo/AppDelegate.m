@@ -36,7 +36,7 @@
         [WebService shareInstance].auth = [UserManager sharedManager].currentUser.authorization;
         rootVC =  [[RoomListViewController alloc] init];
         //LaunchManager初始化语音房SDK
-        [LaunchManager initSDKWithAppKey:AppKey imToken:[UserManager sharedManager].currentUser.token completion:^(BOOL success, RCVoiceRoomErrorCode code) {
+        [LaunchManager initSDKWithAppKey:AppKey imToken:[UserManager sharedManager].currentUser.token completion:^(BOOL success, RCConnectErrorCode code) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (success) {
                     [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"连接融云成功，当前id%@", [UserManager sharedManager].currentUser.userId]];

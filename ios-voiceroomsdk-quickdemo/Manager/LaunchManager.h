@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^LaunchManagerCompletion)(BOOL success, RCVoiceRoomErrorCode code);
+typedef void (^LaunchManagerCompletion)(BOOL success, RCConnectErrorCode code);
 
 @interface LaunchManager : NSObject
 

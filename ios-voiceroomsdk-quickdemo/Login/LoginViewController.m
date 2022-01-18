@@ -117,7 +117,7 @@
     
         if ([[UserManager sharedManager].currentUser save]) {
             Log(@"user info save success");
-            [LaunchManager initSDKWithAppKey:AppKey imToken:[UserManager sharedManager].currentUser.token completion:^(BOOL success, RCVoiceRoomErrorCode code) {
+            [LaunchManager initSDKWithAppKey:AppKey imToken:[UserManager sharedManager].currentUser.token completion:^(BOOL success, RCConnectErrorCode code) {
                 if (success) {
                     [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"连接融云成功，当前id%@", [UserManager sharedManager].currentUser.userId]];
                     Log("voice sdk initializ success");
