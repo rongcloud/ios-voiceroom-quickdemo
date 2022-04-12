@@ -19,6 +19,12 @@
  
 > 示例代码展示了基本的api调用
 
+## 目录结构
+
+![AW4ukQSHFiBqwXJ](https://s2.loli.net/2022/04/12/AW4ukQSHFiBqwXJ.png)
+
+ios-voiceroomsdk-quickdemo主目录导图-相关链接: [https://rhwzk6h609.feishu.cn/docs/doccn9FtUiY5W64f8NZIo0JIuDg?from=from_copylink](https://rhwzk6h609.feishu.cn/docs/doccn9FtUiY5W64f8NZIo0JIuDg?from=from_copylink)
+
 ## 运行Demo
 
 ## 登录
@@ -30,7 +36,6 @@
 2. 加入房间
    * 点击首页列表
 ## 进入房间
-
 - 主播端
   - 申请列表（观众连麦申请）
     - 同意
@@ -63,23 +68,17 @@
 ## 麦位管理
 
 点击直播间的麦位弹出action sheet
-
 - 主播端
-
   - 上麦
   - 下麦
   - 闭麦（关闭该麦位的声音） 
   - 锁麦（该麦位禁止申请上麦）
   - 踢出麦位（踢出该麦位的观众）
-
 - 观众端
-
   - 上麦（向主播发出上麦申请）
   - 下麦
-  - 闭麦  (关闭自己的声音)
-  
+  - 闭麦  (关闭自己的声音) 
 
-更多细节可参照示例代码。
 
 
 
@@ -99,7 +98,7 @@
 * CocoaPods：1.10.0 及以上
 * iOS：11.0 及以上
 * objc：2.0
-#### 相关说明
+#### RCVoiceRoomLib相关说明
  * 集成语聊房 SDK 后，iOS包增量大约4MB;
  * RCVoiceRoomLib 依赖IMLib和RTCLib ,依赖版本如下
     * IMLib , '~> 5.1.4'
@@ -125,6 +124,7 @@
 | 房间属性可扩展    | 支持自定义房间扩展属性。注意，该字段建议使用 JSON 格式字符串。                                            |
 | 麦位属性可扩展    | 支持自定义麦位扩展属性。注意，该字段建议使用 JSON 格式字符串。App 开发者可根据狼人杀，相亲房等具体业务场景，自行定义扩展数据结构，用于区分角色等 |
 
+> 更多细节可具体参照示例代码。
 
 ## 常见问题
 
