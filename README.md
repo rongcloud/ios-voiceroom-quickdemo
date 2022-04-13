@@ -8,7 +8,6 @@
 
 
 
-
 ##  RCVoiceRoomLib简介
 
  * 语聊房SDK(`RCVoiceRoomLib`)为用户提供了一套便捷，有效的针对语聊房场景的SDK。可以让用户在短时间内搭建**一套完整的语聊房系统**。
@@ -34,7 +33,8 @@
 
 ## 目录结构
 
-![](./img/QuickDemo(VodiceRoom).png)
+
+![](https://tva1.sinaimg.cn/large/e6c9d24ely1h189gfl1m5j214o0tgq6p.jpg)
 tip: 完整脑图请查看-> [^脚注1]
 
 ### 语聊房核心模块结构(VoiceRoomModule)
@@ -59,7 +59,7 @@ tip: 完整脑图请查看-> [^脚注1]
    * 过期后您的注册用户会自动移除，想继续使用 quickdemo 需要您重新申请 BusinessToken
    * 成功获取到 BusinessToken 后，替换 VRSDefine.h 中定义的 BusinessToken
 
-      1. cmd + shift + O (快速定位) ,弹出窗口输入`VRSDefine` 回车;即可快速定位 VRSDefine.h 文件
+      1. `cmd + shift + O` (快速定位) ,弹出窗口输入`VRSDefine` 回车;即可快速定位 VRSDefine.h 文件
       2.  替换成功获取的BusinessToken宏定义
            
             ```objc
@@ -73,7 +73,7 @@ tip: 完整脑图请查看-> [^脚注1]
             ```
       3. 修改示意截图
         ![image](https://github.com/rongcloud/ios-voiceroom-quickdemo/raw/main/img/business_token.png)
- 3. cmd+R 即可模拟器运行
+ 3. `Cmd+R` 即可模拟器运行
  4. 输入手机号,点击登录;即可快捷登录;进入语音房列表房间,直接进入房间,或者点击右上角创建语音房间
  5. Enjoy yourself 😊
  
