@@ -24,6 +24,7 @@
 		CB85D41926CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D41826CB489B001D90FC /* ios_voiceroomsdk_quickdemoUITests.m */; };
 		CB93700926FDBFB200851173 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = CB93700826FDBFB200851173 /* User.m */; };
 		CB93700D26FDC0D900851173 /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB93700C26FDC0D900851173 /* UserManager.m */; };
+		D31FEFBF289A8CBA00BA437F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31FEFBE289A8CBA00BA437F /* AVFoundation.framework */; };
 		DC317FB1272FE3B10075D7F0 /* WebService.m in Sources */ = {isa = PBXBuildFile; fileRef = DC317FAD272FE3B10075D7F0 /* WebService.m */; };
 		DC317FB8272FE9C90075D7F0 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC317FB6272FE9C90075D7F0 /* LoginViewController.m */; };
 		DC317FBB272FE9EC0075D7F0 /* LoginResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DC317FB9272FE9EC0075D7F0 /* LoginResponse.m */; };
@@ -107,6 +108,7 @@
 		CB93700826FDBFB200851173 /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		CB93700B26FDC0D900851173 /* UserManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
 		CB93700C26FDC0D900851173 /* UserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
+		D31FEFBE289A8CBA00BA437F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D382C62C5BB1FFA4A19A7CB5 /* Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; path = "Target Support Files/Pods-ios-voiceroomsdk-quickdemoTests/Pods-ios-voiceroomsdk-quickdemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DC317FAD272FE3B10075D7F0 /* WebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebService.m; sourceTree = "<group>"; };
 		DC317FAE272FE3B10075D7F0 /* NetworkConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConst.h; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D31FEFBF289A8CBA00BA437F /* AVFoundation.framework in Frameworks */,
 				4E1193D2943DFA55FE682803 /* Pods_ios_voiceroomsdk_quickdemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -173,6 +176,7 @@
 		69C418C64E879BBE54403642 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D31FEFBE289A8CBA00BA437F /* AVFoundation.framework */,
 				9CB163B4681DA42D8F92F52E /* Pods_ios_voiceroomsdk_quickdemo.framework */,
 				5B610F83335D9A69A9516018 /* Pods_ios_voiceroomsdk_quickdemo_ios_voiceroomsdk_quickdemoUITests.framework */,
 				90843E54EF1E3F92DBAB06EE /* Pods_ios_voiceroomsdk_quickdemoTests.framework */,
@@ -289,7 +293,6 @@
 				CB25665326EB347F0041425B /* VoiceRoom */,
 				CBA7F3BB26DDDAB300AD716C /* RoomList */,
 				DC317FB5272FE9C90075D7F0 /* Login */,
-				DC1BBB822733B0A800109731 /* View */,
 				CB85D3F126CB489A001D90FC /* AppDelegate.h */,
 				CB85D3F226CB489A001D90FC /* AppDelegate.m */,
 				DC317FB4272FE5D80075D7F0 /* VRSDefine.h */,
@@ -364,13 +367,6 @@
 				CB93700C26FDC0D900851173 /* UserManager.m */,
 			);
 			path = User;
-			sourceTree = "<group>";
-		};
-		DC1BBB822733B0A800109731 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		DC317FAC272FE3B10075D7F0 /* Network */ = {
@@ -809,7 +805,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -863,7 +859,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -877,8 +873,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TBA8VYLG4P;
+				DEVELOPMENT_TEAM = 9655N2TSWL;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ios-voiceroomsdk-quickdemo/PrefixHeader.pch";
@@ -888,8 +885,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "cn.zhangyu.ios-voiceroomsdk-quickdemo";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.johankoi.rcrtc.ok5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -900,8 +898,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TBA8VYLG4P;
+				DEVELOPMENT_TEAM = 9655N2TSWL;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ios-voiceroomsdk-quickdemo/PrefixHeader.pch";
@@ -911,8 +910,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "cn.zhangyu.ios-voiceroomsdk-quickdemo";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.johankoi.rcrtc.ok5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

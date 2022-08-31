@@ -4,11 +4,15 @@ inhibit_all_warnings!
 target 'ios-voiceroomsdk-quickdemo' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
- pod 'RCVoiceRoomLib'
+  pod 'RCVoiceRoomLib', :path => '../../gerrit-repo/rcvoiceroomlib-ios'
   pod 'Masonry'
   pod 'SVProgressHUD'
   pod 'YYModel'
   pod 'AFNetworking'
+  
+  # RTC
+  pod 'RongCloudRTC/RongRTCLib', '5.2.4.1'
+  pod 'RongCloudRTC/RongRTCPlayer', '5.2.4.1'
   
   # Pods for ios-voiceroomsdk-quickdemo
 

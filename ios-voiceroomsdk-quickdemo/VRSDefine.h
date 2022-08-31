@@ -11,7 +11,7 @@ static NSString *const LoginSuccessNotification = @"LoginSuccessNotificationIden
 #define AppKey  @"pvxdm17jpw7ar"
 
 //请前往 https://rcrtc-api.rongcloud.net/code 获取 BusinessToken
-#define BusinessToken  <#BusinessToken#>
+#define BusinessToken  @"gKDlVu1kTqMv91hqntCI3Y"
 
 //主色调
 #define mainColor [UIColor colorFromHexString:@"#EF499A"]

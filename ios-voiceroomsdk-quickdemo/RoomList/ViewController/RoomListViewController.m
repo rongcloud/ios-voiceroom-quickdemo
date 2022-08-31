@@ -54,11 +54,11 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-        if (granted) {
-            NSLog(@"get micphone access");
-        }
-    }];
+//    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+//        if (granted) {
+//            NSLog(@"get micphone access");
+//        }
+//    }];
 }
 
 - (void)buildLayout {

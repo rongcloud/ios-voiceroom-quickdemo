@@ -14,6 +14,7 @@
 #import "UserManager.h"
 #import "RoomUserListResponse.h"
 #import "UserListView.h"
+#import <AVFoundation/AVFoundation.h>
 
 static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @interface VoiceRoomViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, RCVoiceRoomDelegate>
@@ -148,6 +149,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)createVoiceRoom:(NSString *)roomId info:(RCVoiceRoomInfo *)roomInfo {
     [[RCVoiceRoomEngine sharedInstance] createAndJoinRoom:roomId room:roomInfo success:^{
         [SVProgressHUD showSuccessWithStatus:@"创建成功"];
+        
+     
+        
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:@"创建失败"];
     }];
@@ -157,6 +161,26 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)joinVoiceRoom:(NSString *)roomId {
     [[RCVoiceRoomEngine sharedInstance] joinRoom:roomId success:^{
         [SVProgressHUD showSuccessWithStatus:@"加入房间成功"];
+//        
+//        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+//        switch (authStatus) {
+//            case AVAuthorizationStatusNotDetermined:
+//                //没有询问是否开启麦克风
+//                break;
+//            case AVAuthorizationStatusRestricted:
+//                //未授权，家长限制
+//                break;
+//            case AVAuthorizationStatusDenied:
+//                //玩家未授权
+//                break;
+//            case AVAuthorizationStatusAuthorized:
+//                //玩家授权
+//                break;
+//            default:
+//                break;
+//        }
+//          
+        
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:@"加入房间失败"];
     }];
@@ -223,17 +247,17 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 - (void)micDisable:(UIButton *)sender {
-    [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:!sender.selected];
+//    [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:!sender.selected];
     sender.selected = !sender.selected;
 }
 
 - (void)muteAll:(UIButton *)sender {
-    [[RCVoiceRoomEngine sharedInstance] muteOtherSeats:!sender.selected];
+//    [[RCVoiceRoomEngine sharedInstance] muteOtherSeats:!sender.selected];
     sender.selected = !sender.selected;
 }
 
 - (void)lockAll:(UIButton *)sender {
-    [[RCVoiceRoomEngine sharedInstance] lockOtherSeats:!sender.selected];
+//    [[RCVoiceRoomEngine sharedInstance] lockOtherSeats:!sender.selected];
     sender.selected = !sender.selected;
 }
 
@@ -562,6 +586,9 @@ audience:
             if (emptyIndex >= 0) {
                 [[RCVoiceRoomEngine sharedInstance] enterSeat:emptyIndex success:^{
                     [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+                    
+                    
+                    
                 } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                     [SVProgressHUD showErrorWithStatus:@"上麦失败"];
                 }];
@@ -578,6 +605,12 @@ audience:
     [SVProgressHUD showSuccessWithStatus:@"主播接受上麦请求"];
     [[RCVoiceRoomEngine sharedInstance] enterSeat:self.requestSeatIndex success:^{
         [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+        
+//        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) {
+//
+//        }];
+        
+        
         Log(@"audience on seat success");
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",code]];
