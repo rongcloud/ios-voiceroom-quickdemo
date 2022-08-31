@@ -58,23 +58,23 @@
 - (void)updateCell:(RCVoiceSeatInfo *)seatInfo withSeatIndex:(NSUInteger)index {
     self.micIndexLabel.text = [NSString stringWithFormat:@"第%lu号麦", (unsigned long)index];
     self.avatarImageView.image = [UIImage imageNamed:@"circle_bg"];
-    switch (seatInfo.status) {
-        case RCSeatStatusEmpty:
-            self.micStatusImageView.image = [UIImage imageNamed:@"plus_user_to_seat_icon"];
-            break;
-        case RCSeatStatusUsing:
-            self.micStatusImageView.image = nil;
-            if (seatInfo.userId != nil && seatInfo.userId.length > 0) {
-                self.micIndexLabel.text = seatInfo.userId;
-                self.avatarImageView.image = [UIImage imageNamed:@"avatar1"];
-            }
-        case RCSeatStatusLocking:
-            self.micStatusImageView.image = [UIImage imageNamed:@"lock_seat_icon"];
-        default:
-            break;
-    }
-    self.muteImageView.hidden = !seatInfo.isMuted;
-    self.micStatusImageView.hidden = (seatInfo.status == RCSeatStatusUsing);
+//    switch (seatInfo.status) {
+//        case RCSeatStatusEmpty:
+//            self.micStatusImageView.image = [UIImage imageNamed:@"plus_user_to_seat_icon"];
+//            break;
+//        case RCSeatStatusUsing:
+//            self.micStatusImageView.image = nil;
+//            if (seatInfo.userId != nil && seatInfo.userId.length > 0) {
+//                self.micIndexLabel.text = seatInfo.userId;
+//                self.avatarImageView.image = [UIImage imageNamed:@"avatar1"];
+//            }
+//        case RCSeatStatusLocking:
+//            self.micStatusImageView.image = [UIImage imageNamed:@"lock_seat_icon"];
+//        default:
+//            break;
+//    }
+//    self.muteImageView.hidden = !seatInfo.isMuted;
+//    self.micStatusImageView.hidden = (seatInfo.status == RCSeatStatusUsing);
 }
 
 #pragma mark - Lazy Init
