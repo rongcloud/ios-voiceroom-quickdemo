@@ -3,8 +3,8 @@
 @implementation CreateRoomResponse
 @end
 
-@implementation CreateRoomData
+@implementation RCSceneRoom
 @end
 
-@implementation CreateUser
+@implementation RCSceneRoomUser
 @end

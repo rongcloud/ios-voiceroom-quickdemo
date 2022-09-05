@@ -14,7 +14,6 @@
 		CB25664E26EB31CD0041425B /* RoomListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25664D26EB31CD0041425B /* RoomListTableViewCell.m */; };
 		CB25665726EB34930041425B /* VoiceRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25665626EB34930041425B /* VoiceRoomViewController.m */; };
 		CB25666A26F18FBB0041425B /* SeatInfoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25666926F18FBB0041425B /* SeatInfoCollectionViewCell.m */; };
-		CB25666E26F1A1730041425B /* RoomInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25666D26F1A1730041425B /* RoomInfo.m */; };
 		CB25667626F1CF110041425B /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = CB25667526F1CF110041425B /* UIColor+Hex.m */; };
 		CB85D3F326CB489A001D90FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB85D3F226CB489A001D90FC /* AppDelegate.m */; };
 		CB85D3FE26CB489A001D90FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB85D3FD26CB489A001D90FC /* Assets.xcassets */; };
@@ -87,8 +86,6 @@
 		CB25665626EB34930041425B /* VoiceRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoiceRoomViewController.m; sourceTree = "<group>"; };
 		CB25666826F18FBB0041425B /* SeatInfoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeatInfoCollectionViewCell.h; sourceTree = "<group>"; };
 		CB25666926F18FBB0041425B /* SeatInfoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeatInfoCollectionViewCell.m; sourceTree = "<group>"; };
-		CB25666C26F1A1730041425B /* RoomInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomInfo.h; sourceTree = "<group>"; };
-		CB25666D26F1A1730041425B /* RoomInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomInfo.m; sourceTree = "<group>"; };
 		CB25667426F1CF110041425B /* UIColor+Hex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
 		CB25667526F1CF110041425B /* UIColor+Hex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
 		CB85D3EE26CB489A001D90FC /* ios-voiceroomsdk-quickdemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-voiceroomsdk-quickdemo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -209,8 +206,6 @@
 				DCDA63B02730E71500FD3335 /* RoomListResponse.m */,
 				DCDA63B8273112E600FD3335 /* CreateRoomResponse.h */,
 				DCDA63B9273112E600FD3335 /* CreateRoomResponse.m */,
-				CB25666C26F1A1730041425B /* RoomInfo.h */,
-				CB25666D26F1A1730041425B /* RoomInfo.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -695,7 +690,6 @@
 				DC78442E2732250900398038 /* RoomUserListResponse.m in Sources */,
 				DCDA63BA273112E600FD3335 /* CreateRoomResponse.m in Sources */,
 				DC317FBB272FE9EC0075D7F0 /* LoginResponse.m in Sources */,
-				CB25666E26F1A1730041425B /* RoomInfo.m in Sources */,
 				DC784434273225A400398038 /* UserListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -888,7 +882,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.johankoi.rcrtc.ok5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -913,7 +907,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cn.johankoi.rcrtc.ok5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

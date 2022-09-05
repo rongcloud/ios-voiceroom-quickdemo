@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 
 @class CreateRoomResponse;
-@class CreateRoomData;
-@class CreateUser;
+@class RCSceneRoom;
+@class RCSceneRoomUser;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,10 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CreateRoomResponse : NSObject
 @property (nonatomic, assign) NSInteger code;
 @property (nonatomic, copy)   NSString *msg;
-@property (nonatomic, strong) CreateRoomData *data;
+@property (nonatomic, strong) RCSceneRoom *data;
 @end
 
-@interface CreateRoomData : NSObject
+@interface RCSceneRoom : NSObject
 @property (nonatomic, assign) NSInteger identifier;
 @property (nonatomic, copy)   NSString *roomId;
 @property (nonatomic, copy)   NSString *roomName;
@@ -24,13 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)   NSString *password;
 @property (nonatomic, copy)   NSString *userId;
 @property (nonatomic, assign) NSInteger updateDt;
-@property (nonatomic, strong) CreateUser *createUser;
+@property (nonatomic, strong) RCSceneRoomUser *createUser;
 @property (nonatomic, assign) NSInteger roomType;
 @property (nonatomic, assign) NSInteger userTotal;
 @property (nonatomic, assign) BOOL isStop;
 @end
 
-@interface CreateUser : NSObject
+@interface RCSceneRoomUser : NSObject
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *portrait;

@@ -20,7 +20,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @interface VoiceRoomViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, RCVoiceRoomDelegate>
 
 @property (nonatomic, copy) NSString *roomId;
+
 @property (nonatomic, assign) BOOL isCreate;
+
 
 // 根据roomInfoDidUpdate获取的最新roomInfo
 @property (nonatomic, copy) RCVoiceRoomInfo *roomInfo;
@@ -51,6 +53,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 //是否为PK直播间
 @property (nonatomic, assign, getter=isPK) BOOL pk;
 
+ 
+
 #warning 如下方法需要在PK分类中重载
 - (void)pk_loadPKModule;
 - (void)pk_invite;
@@ -61,19 +65,12 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 @implementation VoiceRoomViewController
 
-- (instancetype)initWithJoinRoomId:(NSString *)roomId {
-    if (self = [super initWithNibName:nil bundle:nil]) {
-        self.roomId = roomId;
-        self.isCreate = NO;
-    }
-    return self;
-}
 
 - (instancetype)initWithRoomId:(NSString *)roomId roomInfo:(RCVoiceRoomInfo *)roomInfo {
     if (self = [super initWithNibName:nil bundle:nil]) {
         self.roomId = roomId;
         self.roomInfo = roomInfo;
-        self.isCreate = YES;
+        self.isCreate = (roomInfo != nil);
     }
     return self;
 }
@@ -118,8 +115,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 // 离开房间
 - (void)quitRoom {
-    
-    //离开房间
     void(^leaveRoom)(void) = ^(void){
         if (self.isPK) {
             [self pk_quit];
@@ -153,9 +148,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)createVoiceRoom:(NSString *)roomId info:(RCVoiceRoomInfo *)roomInfo {
     [[RCVoiceRoomEngine sharedInstance] createAndJoinRoom:roomId room:roomInfo success:^{
         [SVProgressHUD showSuccessWithStatus:@"创建成功"];
-        
-     
-        
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:@"创建失败"];
     }];
@@ -249,30 +241,25 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 //展示功能列表
 - (void)showActionSheetWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"" message:@"请选择操作" preferredStyle:UIAlertControllerStyleActionSheet];
-    WeakSelf(self);
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"麦位" message:@"请选择操作" preferredStyle:UIAlertControllerStyleActionSheet];
+
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"上麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        StrongSelf(weakSelf);
-        [strongSelf enterSeatWithSeatInfo:seatInfo seatIndex:index];
+        [self enterSeatWithSeatInfo:seatInfo seatIndex:index];
     }]];
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"下麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        StrongSelf(weakSelf);
-        [strongSelf leaveSeatWithSeatInfo:seatInfo seatIndex:index];
+        [self leaveSeatWithSeatInfo:seatInfo seatIndex:index];
     }]];
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"闭麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        StrongSelf(weakSelf);
-        [strongSelf muteSeatWithSeatInfo:seatInfo seatIndex:index];
+        [self muteSeatWithSeatInfo:seatInfo seatIndex:index];
     }]];
     
 #warning 以下功能会根据用户是主播还是观众进行区分
     if (self.isCreate) {
         [actionSheet addAction:[UIAlertAction actionWithTitle:@"锁麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            StrongSelf(weakSelf);
-            [strongSelf lockSeatWithSeatInfo:seatInfo seatIndex:index];
+            [self lockSeatWithSeatInfo:seatInfo seatIndex:index];
         }]];
         [actionSheet addAction:[UIAlertAction actionWithTitle:@"踢出麦位" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            StrongSelf(weakSelf);
-            [strongSelf kickUserFromSeat:index];
+            [self kickUserFromSeat:index];
         }]];
     } else {
         //观众
@@ -280,7 +267,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-
     [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
@@ -337,7 +323,7 @@ audience:
         }];
     } else {
         if (self.isCreate) {   // 房主踢人下麦
-            [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:seatUser.userId success:^{
+            [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:seatUser.userId  content:@"" success:^{
                 [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"用户 %@ 下麦成功",seatUser.userId]];
             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                 [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"下麦失败 code: %ld",(long)code]];
@@ -384,7 +370,7 @@ audience:
         return;
     }
     
-    [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:seatUser.userId success:^{
+    [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:seatUser.userId content:@"" success:^{
         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"用户:%@已经被踢出座位",seatUser.userId]];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"踢出用户失败 code: %ld",(long)code]];

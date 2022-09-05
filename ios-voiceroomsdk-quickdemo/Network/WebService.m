@@ -94,6 +94,20 @@ static inline void _responseHandler(Class responseClase, NSDictionary *responseO
     
 }
 
+
++ (void)checkCreatedRoom:(NSInteger)type
+             responseClass:(nullable Class)responseClass
+                   success:(nullable SuccessCompletion)success
+                   failure:(nullable FailureCompletion)failure {
+    NSDictionary *param = @{
+        @"roomType":@(type)
+    };
+
+    [[self shareInstance] PUT:np_check_created parameters:param auth:YES responseClass:responseClass success:success failure:failure];
+}
+
+
+
 + (void)deleteRoomWithRoomId:(NSString *)roomId
                      success:(nullable SuccessCompletion)success
                      failure:(nullable FailureCompletion)failure {
@@ -200,6 +214,33 @@ static inline void _responseHandler(Class responseClase, NSDictionary *responseO
     }
     
     return [self GET:URLString parameters:parameters headers:header progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (success) {
+            _responseHandler(responseClass, responseObject, success);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+            Log(@"request error \n url = %@ \n error code = %ld \n msg = %@ \n",URLString,(long)error.code,error.description);
+        }
+    }];
+}
+
+
+- (NSURLSessionDataTask *)PUT:(NSString *)URLString
+                   parameters:(nullable id)parameters
+                         auth:(BOOL)auth
+                responseClass:(nullable Class)responseClass
+                      success:(nullable SuccessCompletion)success
+                      failure:(nullable FailureCompletion)failure  {
+    
+    NSDictionary *header = _header();
+    
+    if (auth && self.auth != nil) {
+        NSMutableDictionary *val = [[NSMutableDictionary alloc] initWithDictionary:header];
+        [val setValue:self.auth forKey:@"Authorization"];
+        header = [val copy];
+    }
+    return [self PUT:URLString parameters:parameters headers:header success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (success) {
             _responseHandler(responseClass, responseObject, success);
         }

@@ -28,9 +28,10 @@
  正式环境中，请从自己的服务器通过接口获取
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
+    [SVProgressHUD setMaximumDismissTimeInterval:1.5];
+
     UIViewController *rootVC;
     if ([UserManager isLogin]) {
         [WebService shareInstance].auth = [UserManager sharedManager].currentUser.authorization;

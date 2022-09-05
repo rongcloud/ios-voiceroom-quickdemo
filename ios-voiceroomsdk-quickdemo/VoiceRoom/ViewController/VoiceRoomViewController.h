@@ -9,15 +9,10 @@
 #import <RCVoiceRoomLib/RCVoiceRoomLib.h>
 @class UserListView;
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface VoiceRoomViewController : UIViewController
-
-- (instancetype)initWithJoinRoomId:(NSString *)roomId;
 
 - (instancetype)initWithRoomId:(NSString *)roomId
                       roomInfo:(RCVoiceRoomInfo *)roomInfo;
 
 @end
 
-NS_ASSUME_NONNULL_END

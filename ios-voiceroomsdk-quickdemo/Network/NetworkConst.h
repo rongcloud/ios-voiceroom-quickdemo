@@ -21,6 +21,9 @@ static NSString *const np_login = @"user/login";
 //创建房间
 static NSString *const np_room_creat = @"mic/room/create";
 
+//创建房间
+static NSString *const np_check_created = @"mic/room/create/check/v1";
+
 //删除房间
 static NSString *const np_room_delete = @"mic/room/%@/delete";
 
