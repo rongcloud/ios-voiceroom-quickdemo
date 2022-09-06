@@ -20,6 +20,8 @@
 + (void)useRongIMInit:(NSString *)appKey
           withImToken:(NSString *)imToken
            completion:(LaunchManagerCompletion)completion {
+  
+    
     [[RCCoreClient sharedCoreClient] initWithAppKey:appKey];
     [[RCCoreClient sharedCoreClient] connectWithToken:imToken dbOpened:^(RCDBErrorCode code) {
         

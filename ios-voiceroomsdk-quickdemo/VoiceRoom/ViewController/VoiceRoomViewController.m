@@ -246,21 +246,21 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"下麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self leaveSeatWithSeatInfo:seatInfo seatIndex:index];
     }]];
-    [actionSheet addAction:[UIAlertAction actionWithTitle:@"闭麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self muteSeatWithSeatInfo:seatInfo seatIndex:index];
-    }]];
-    
-#warning 以下功能会根据用户是主播还是观众进行区分
+  
     if (self.currentUserIsRoomOwner) {
-        [actionSheet addAction:[UIAlertAction actionWithTitle:@"锁麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *micTitle = seatInfo.mute ? @"解除麦位静音" : @"麦位静音";
+        [actionSheet addAction:[UIAlertAction actionWithTitle:micTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self muteSeatWithSeatInfo:seatInfo seatIndex:index];
+        }]];
+        
+        NSString *lockTitle = seatInfo.lock ? @"解锁麦位" : @"锁定麦位";
+        [actionSheet addAction:[UIAlertAction actionWithTitle:lockTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self lockSeatWithSeatInfo:seatInfo seatIndex:index];
         }]];
+        
         [actionSheet addAction:[UIAlertAction actionWithTitle:@"踢出麦位" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self kickUserFromSeat:index];
         }]];
-    } else {
-        //观众
-        //TODO:
     }
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
@@ -269,55 +269,54 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 //上麦
 - (void)enterSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
-    if (self.currentUserIsRoomOwner || self.roomInfo.isFreeEnterSeat)
-        goto host; //自由麦模式或者当前用户为主播跳转到host分支
-    else
-        goto audience;//跳转到观众分支
-host:
-    if (self.isOnTheSeat) { // 已经在麦上，换座位
-        [[RCVoiceRoomEngine sharedInstance] switchSeatTo:index success:^{
-            [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
-        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"换座位失败 code: %ld",(long)code]];
-        }];
-    } else {  //不在麦上，直接上麦
-        [[RCVoiceRoomEngine sharedInstance] enterSeat:index success:^{
-            [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+    if (self.currentUserIsRoomOwner || self.roomInfo.isFreeEnterSeat) {
+        if (self.isOnTheSeat) { // 已经在麦上，换座位
+            [[RCVoiceRoomEngine sharedInstance] switchSeatTo:index success:^{
+                self.onTheSeat = YES;
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
+            } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"换座位失败 code: %ld",(long)code]];
+            }];
+        } else { //不在麦上，直接上麦
+            [[RCVoiceRoomEngine sharedInstance] enterSeat:index success:^{
+                [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+                self.onTheSeat = YES;
+            } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
+            }];
+        }
+    } else {
+        self.requestSeatIndex = index;
+        [[RCVoiceRoomEngine sharedInstance] requestSeat:index content:@"" successBlock:^{
+            [SVProgressHUD showSuccessWithStatus:@"上麦请求发送成功"];
         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
         }];
     }
-    self.onTheSeat = YES;
-
-audience:
-    self.requestSeatIndex = index;
-    [[RCVoiceRoomEngine sharedInstance] requestSeat:index content:@"" successBlock:^{
-        [SVProgressHUD showSuccessWithStatus:@"上麦请求发送成功"];
-    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
-    }];
 }
 
 // 下麦
 - (void)leaveSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
     NSString *seatKey = [NSString stringWithFormat:@"%zd",index];
     RCVoiceUserInfo *user = self.seatUserMap[seatKey];
-    
     if ([user.userId isEqualToString:UserManager.userId]) { // 自己所在的麦位
         [[RCVoiceRoomEngine sharedInstance] leaveSeatWithSuccess:^{
             [SVProgressHUD showSuccessWithStatus:@"下麦成功"];
+            self.onTheSeat = NO;
         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"下麦失败 code: %ld",(long)code]];
+            NSString *status = [NSString stringWithFormat:@"下麦: %ld, %@",code,msg];
+            [SVProgressHUD showErrorWithStatus:status];
         }];
     } else {
         if (self.currentUserIsRoomOwner) { // 房主踢人下麦
-            [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:user.userId  content:@"" success:^{
+            [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:user.userId content:@"" success:^{
                 [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"用户 %@ 下麦成功",user.userId]];
             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"下麦失败 code: %ld",(long)code]];
+                NSString *status = [NSString stringWithFormat:@"踢下麦失败: %ld, %@",code,msg];
+                [SVProgressHUD showErrorWithStatus:status];
             }];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"下麦失败，观众没有此位置的下麦权限"];
+            [SVProgressHUD showErrorWithStatus:@"观众没有踢下麦权限"];
         }
     }
 }
@@ -334,11 +333,12 @@ audience:
 
 //静音
 - (void)muteSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
-    [[RCVoiceRoomEngine sharedInstance] muteSeat:@[@(index)] mute:!seatInfo.isMuted success:^{
-        NSString *status = !seatInfo.isMuted ? @"静音成功" : @"解除静音成功";
+    BOOL toMute = !seatInfo.isMuted;
+    [[RCVoiceRoomEngine sharedInstance] muteSeat:@[@(index)] mute:toMute success:^{
+        NSString *status = toMute ? @"静音成功" : @"解除静音成功";
         [SVProgressHUD showSuccessWithStatus:status];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-        NSString *err = !seatInfo.isMuted ? @"静音失败 code: %ld" : @"解除静音失败 code: %ld";
+        NSString *err = toMute ? @"静音失败 code: %ld" : @"解除静音失败 code: %ld";
         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:err,(long)code]];
     }];
 }
@@ -382,8 +382,8 @@ audience:
             //根据用户的uid将用户踢出直播间
         case UserListActionKick:
             {
-                [[RCVoiceRoomEngine sharedInstance] kickUserFromRoom:uid extra:@"请出去" success:^{
-                    
+                [[RCVoiceRoomEngine sharedInstance] kickUserFromRoom:uid content:@"请出去" success:^{
+                    [SVProgressHUD showSuccessWithStatus:@"踢人成功"];
                 } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                     
                 }];
@@ -565,22 +565,34 @@ audience:
 
 // 用户进入房间时会触发此回调
 - (void)userDidEnter:(nonnull NSString *)userId {
-    
+    NSString *status = [NSString stringWithFormat:@"%@进入", userId];
+    [SVProgressHUD showSuccessWithStatus:status];
 }
+
+// 用户离开房间时触发此回调
+- (void)userDidExit:(nonnull NSString *)userId {
+    NSString *status = [NSString stringWithFormat:@"%@离开", userId];
+    [SVProgressHUD showSuccessWithStatus:status];
+}
+
 
 // 用户上了某个麦位时会触发此回调
 - (void)userDidEnterSeat:(NSInteger)seatIndex user:(nonnull NSString *)userId {
     
 }
 
-// 用户离开房间时触发此回调
-- (void)userDidExit:(nonnull NSString *)userId {
-    
+- (void)roomDidClosed {
+    [SVProgressHUD showSuccessWithStatus:@"房间已经关闭"];
+    [self.navigationController popViewControllerAnimated:true];
 }
 
 // 用户被踢出房间时触发此回调
-- (void)userDidKickFromRoom:(nonnull NSString *)targetId byUserId:(nonnull NSString *)userId {
-    
+- (void)userDidKickFromRoom:(nonnull NSString *)targetId byUserId:(nonnull NSString *)userId content:(nonnull NSString *)content {
+    if (!self.currentUserIsRoomOwner) {
+        NSString *status = [NSString stringWithFormat:@"被%@踢出房间",userId];
+        [SVProgressHUD showSuccessWithStatus:status];
+        [self quitRoom];
+    }
 }
 
 // 用户下麦某个麦位触发此回调
@@ -589,35 +601,35 @@ audience:
 }
 
 - (void)invitationDidReceive:(nonnull NSString *)invitationId from:(nonnull NSString *)userId content:(nonnull NSString *)content {
-    NSData *jsonData = [content dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dict;
-    if (jsonData != nil) {
-        NSError *err;
-        dict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&err];
-    }
-    if (dict == nil)
-        return;
-    
-    NSString *uid = dict[@"uid"];
-    NSInteger index = [(NSNumber *)dict[@"index"] integerValue];
-    
-    if (uid != nil && [uid isEqualToString:UserManager.userId]) {
-        [self showAlertWithTitle:@"收到上麦请求" completion:^(BOOL accept) {
-            [[RCVoiceRoomEngine sharedInstance] responseInvitation:invitationId accept:accept content:@"" success:^{
-                if (accept) {
-                    [[RCVoiceRoomEngine sharedInstance] enterSeat:index success:^{
-                        [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
-                    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-                        [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
-                    }];
-                } else {
-                    [SVProgressHUD showSuccessWithStatus:@"已拒绝邀请"];
-                }
-            } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-                
-            }];
+    NSString *title = [NSString stringWithFormat:@"%@邀请你上麦",userId];
+    [self showAlertWithTitle:title completion:^(BOOL accept) {
+        [[RCVoiceRoomEngine sharedInstance] responseInvitation:invitationId accept:accept content:@"" success:^{
+            if (accept) {
+                [SVProgressHUD showSuccessWithStatus:@"接受邀请"];
+//                [[RCVoiceRoomEngine sharedInstance] enterSeat:index success:^{
+//                    [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
+//                } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+//                    [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
+//                }];
+            } else {
+                [SVProgressHUD showSuccessWithStatus:@"已拒绝邀请"];
+            }
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            
         }];
+    }];
+    
+}
+
+
+- (void)invitationDidRespones:(BOOL)isAccept invitationId:(NSString *)invitationId content:(NSString *)content {
+    NSString *status = nil;
+    if (isAccept) {
+        status = [NSString stringWithFormat:@"对方接受邀请,Id: %@",invitationId];
+    } else {
+        status = [NSString stringWithFormat:@"对方拒绝邀请,Id: %@",invitationId];
     }
+    [SVProgressHUD showSuccessWithStatus:status];
 }
 
 #pragma mark -Layout Subviews
