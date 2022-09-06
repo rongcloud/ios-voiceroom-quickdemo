@@ -8,6 +8,7 @@
 #import "SeatInfoCollectionViewCell.h"
 #import <Masonry.h>
 #import <RCVoiceRoomLib/RCVoiceSeatInfo.h>
+#import <RCVoiceRoomLib/RCVoiceUserInfo.h>
 
 @interface SeatInfoCollectionViewCell ()
 
@@ -55,26 +56,17 @@
 
 #pragma mark - Public Method
 
-- (void)updateCell:(RCVoiceSeatInfo *)seatInfo withSeatIndex:(NSUInteger)index {
-    self.micIndexLabel.text = [NSString stringWithFormat:@"第%lu号麦", (unsigned long)index];
+
+- (void)updateCell:(RCVoiceSeatInfo *)seatInfo withSeatUser:(RCVoiceUserInfo *)user seatIndex:(NSInteger)seatIndex {    self.micIndexLabel.text = [NSString stringWithFormat:@"第%lu号麦", seatIndex];
     self.avatarImageView.image = [UIImage imageNamed:@"circle_bg"];
-//    switch (seatInfo.status) {
-//        case RCSeatStatusEmpty:
-//            self.micStatusImageView.image = [UIImage imageNamed:@"plus_user_to_seat_icon"];
-//            break;
-//        case RCSeatStatusUsing:
-//            self.micStatusImageView.image = nil;
-//            if (seatInfo.userId != nil && seatInfo.userId.length > 0) {
-//                self.micIndexLabel.text = seatInfo.userId;
-//                self.avatarImageView.image = [UIImage imageNamed:@"avatar1"];
-//            }
-//        case RCSeatStatusLocking:
-//            self.micStatusImageView.image = [UIImage imageNamed:@"lock_seat_icon"];
-//        default:
-//            break;
-//    }
-//    self.muteImageView.hidden = !seatInfo.isMuted;
-//    self.micStatusImageView.hidden = (seatInfo.status == RCSeatStatusUsing);
+    if (user == nil) {
+        self.micStatusImageView.image = [UIImage imageNamed:@"plus_user_to_seat_icon"];
+    } else {
+        self.micIndexLabel.text = user.userId;
+        self.avatarImageView.image = [UIImage imageNamed:@"avatar1"];
+    }
+    self.micStatusImageView.image = seatInfo.isLocked ? [UIImage imageNamed:@"lock_seat_icon"] : nil;
+    self.muteImageView.hidden = !seatInfo.isMuted;
 }
 
 #pragma mark - Lazy Init

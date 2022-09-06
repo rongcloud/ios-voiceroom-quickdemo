@@ -21,16 +21,13 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 @property (nonatomic, strong) RCSceneRoom *roomResp;
 
-@property (nonatomic, assign) BOOL isCreate;
+@property (nonatomic, assign) BOOL currentUserIsRoomOwner;
 
-
-// 根据roomInfoDidUpdate获取的最新roomInfo
 @property (nonatomic, copy) RCVoiceRoomInfo *roomInfo;
-// 根据seatInfoDidUpdate 获取的最新麦位信息
-@property (nonatomic, strong) NSArray<RCVoiceSeatInfo *> *seatlist;
 
-@property (nonatomic, strong) NSArray<RCVoiceUserInfo *> *seatUserlist;
-@property (nonatomic, strong) NSArray<RCVoiceRequesterInfo *> *requesters;
+@property (nonatomic, strong) NSArray<RCVoiceSeatInfo *> *seatlist;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, RCVoiceUserInfo *> *seatUserMap;
+@property (nonatomic, strong) NSMutableArray<RoomUser *> *requestRoomUsers;
 
 // 用来显示麦位的collectionView
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -53,7 +50,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 //是否为PK直播间
 @property (nonatomic, assign, getter=isPK) BOOL pk;
 
- 
 
 #warning 如下方法需要在PK分类中重载
 - (void)pk_loadPKModule;
@@ -65,30 +61,44 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 @implementation VoiceRoomViewController
 
+- (NSMutableDictionary<NSString *,RCVoiceUserInfo *> *)seatUserMap {
+    if (!_seatUserMap) {
+        _seatUserMap = [NSMutableDictionary dictionary];
+    }
+    return _seatUserMap;
+}
+
+- (NSMutableArray<RoomUser *> *)requestRoomUsers {
+    if (!_requestRoomUsers) {
+        _requestRoomUsers = [NSMutableArray array];
+    }
+    return _requestRoomUsers;
+}
+
 - (instancetype)initWithRoom:(RCSceneRoom *)roomResp roomInfo:(RCVoiceRoomInfo *)roomInfo {
     if (self = [super initWithNibName:nil bundle:nil]) {
         self.roomResp = roomResp;
         self.roomInfo = roomInfo;
-        self.isCreate = (roomInfo != nil);
+        self.currentUserIsRoomOwner = [roomResp.createUser.userId isEqualToString:UserManager.userId];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self buildLayout];
 
     [RCVoiceRoomEngine.sharedInstance setDelegate:self];
     
     NSString *roomId = self.roomResp.roomId;
-    if (self.isCreate) {
+    if (self.roomInfo) {
         [self createVoiceRoom:roomId info:_roomInfo];
     } else {
         [self joinVoiceRoom:roomId];
     }
     
     self.requestSeatIndex = -1;
-    
-    [self buildLayout];
    
     // 加载PK模块
     if (self.isPK) {
@@ -134,19 +144,15 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         }];
     };
     
-    if (self.isCreate) {
-        //主播端调用业务接口销毁房间
+    if (_currentUserIsRoomOwner) {
         [WebService deleteRoomWithRoomId:self.roomResp.roomId success:^(id  _Nullable responseObject) {
             leaveRoom();
         } failure:^(NSError * _Nonnull error) {
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"离开房间失败 code: %ld",error.code]];
         }];
     } else {
-        //观众端直接离开
         leaveRoom();
     }
-    
-    
 }
 
 
@@ -154,7 +160,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [[RCVoiceRoomEngine sharedInstance] createAndJoinRoom:roomId room:roomInfo success:^{
         [SVProgressHUD showSuccessWithStatus:@"创建成功"];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-        [SVProgressHUD showSuccessWithStatus:@"创建失败"];
+        NSString *status = [NSString stringWithFormat:@"创建失败: %ld, %@",code,msg];
+        [SVProgressHUD showSuccessWithStatus:status];
+        [self.navigationController popViewControllerAnimated:true];
     }];
 }
 
@@ -162,7 +170,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [[RCVoiceRoomEngine sharedInstance] joinRoom:roomId success:^{
         [SVProgressHUD showSuccessWithStatus:@"加入房间成功"];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-        [SVProgressHUD showSuccessWithStatus:@"加入房间失败"];
+        NSString *status = [NSString stringWithFormat:@"加入失败: %ld, %@",code,msg];
+        [SVProgressHUD showSuccessWithStatus:status];
+        [self.navigationController popViewControllerAnimated:true];
     }];
 }
 
@@ -170,34 +180,14 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 //获取申请上麦用户列表
 - (void)fetchRequestList {
-//    [[RCVoiceRoomEngine sharedInstance] getRequestSeatUserIds:^(NSArray<NSString *> * _Nonnull users) {
-//        if (users && users.count > 0) {
-//            Log(@"host request users list is empty");
-//            //使用 Engine 获取的用户ID批量获取用户信息
-//            [WebService fetchUserInfoListWithUids:users responseClass:[RoomUserListResponse class] success:^(id  _Nullable responseObject) {
-//                Log(@"host network fetch users info success");
-//                [SVProgressHUD showSuccessWithStatus:LocalizedString(@"live_fetch_request_list_success")];
-//                RoomUserListResponse *resObj = (RoomUserListResponse *)responseObject;
-//                if (resObj.code.integerValue == StatusCodeSuccess) {
-//                    [self.listView setListType:UserListTypeRequest];
-//                    [self.listView reloadDataWithUsers:resObj.data];
-//                    [self.listView show];
-//                }
-//            } failure:^(NSError * _Nonnull error) {
-//                Log(@"host network fetch users info failed code: %ld",(long)error.code);
-//            }];
-//        } else {
-//            [SVProgressHUD showSuccessWithStatus:LocalizedString(@"live_request_list_empty")];
-//        }
-//    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-//
-//    }];
+    [self.listView setListType:UserListTypeRequest];
+    [self.listView reloadDataWithUsers:self.requestRoomUsers];
+    [self.listView show];
 }
+
 //获取房间内用户列表
 - (void)fetchUserList {
     [WebService roomUserListWithRoomId:self.roomResp.roomId responseClass:[RoomUserListResponse class] success:^(id  _Nullable responseObject) {
-        Log(@"host network fetch room users list success");
-        [SVProgressHUD showSuccessWithStatus:LocalizedString(@"live_fetch_user_list_success")];
         RoomUserListResponse *resObj = (RoomUserListResponse *)responseObject;
         if (resObj.data == nil || resObj.data.count == 0) {
             [SVProgressHUD showSuccessWithStatus:LocalizedString(@"live_user_list_empty")];
@@ -227,8 +217,11 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 - (void)micDisable:(UIButton *)sender {
-//    [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:!sender.selected];
-    sender.selected = !sender.selected;
+    [[RCVoiceRoomEngine sharedInstance] disableAudioRecording:!sender.selected success:^{
+        sender.selected = !sender.selected;
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                
+    }];
 }
 
 - (void)muteAll:(UIButton *)sender {
@@ -258,7 +251,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }]];
     
 #warning 以下功能会根据用户是主播还是观众进行区分
-    if (self.isCreate) {
+    if (self.currentUserIsRoomOwner) {
         [actionSheet addAction:[UIAlertAction actionWithTitle:@"锁麦" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self lockSeatWithSeatInfo:seatInfo seatIndex:index];
         }]];
@@ -276,12 +269,12 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 //上麦
 - (void)enterSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
-    if (self.isCreate || self.roomInfo.isFreeEnterSeat)
-        goto host;//自由麦模式或者当前用户为主播跳转到host分支
+    if (self.currentUserIsRoomOwner || self.roomInfo.isFreeEnterSeat)
+        goto host; //自由麦模式或者当前用户为主播跳转到host分支
     else
         goto audience;//跳转到观众分支
 host:
-    if (self.isOnTheSeat) {  //已经在麦上，换座位
+    if (self.isOnTheSeat) { // 已经在麦上，换座位
         [[RCVoiceRoomEngine sharedInstance] switchSeatTo:index success:^{
             [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
@@ -298,37 +291,28 @@ host:
 
 audience:
     self.requestSeatIndex = index;
-    
-    [[RCVoiceRoomEngine sharedInstance] requestSeat:index extra:@"" successBlock:^{
+    [[RCVoiceRoomEngine sharedInstance] requestSeat:index content:@"" successBlock:^{
         [SVProgressHUD showSuccessWithStatus:@"上麦请求发送成功"];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
     }];
 }
 
-//下麦
+// 下麦
 - (void)leaveSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
-    RCVoiceUserInfo *seatUser = nil;
-    for (RCVoiceUserInfo *user in self.seatUserlist) {
-        if (user.index == (unsigned long)index) {
-            seatUser = user;
-            break;
-        }
-    }
-    if (seatUser == nil) {
-        [SVProgressHUD showErrorWithStatus:@"麦位没有用户上麦"];
-        return;
-    }
-    if ([seatUser.userId isEqualToString:UserManager.userId]) { // 自己所在的麦位
+    NSString *seatKey = [NSString stringWithFormat:@"%zd",index];
+    RCVoiceUserInfo *user = self.seatUserMap[seatKey];
+    
+    if ([user.userId isEqualToString:UserManager.userId]) { // 自己所在的麦位
         [[RCVoiceRoomEngine sharedInstance] leaveSeatWithSuccess:^{
             [SVProgressHUD showSuccessWithStatus:@"下麦成功"];
         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"下麦失败 code: %ld",(long)code]];
         }];
     } else {
-        if (self.isCreate) {   // 房主踢人下麦
-            [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:seatUser.userId  content:@"" success:^{
-                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"用户 %@ 下麦成功",seatUser.userId]];
+        if (self.currentUserIsRoomOwner) { // 房主踢人下麦
+            [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:user.userId  content:@"" success:^{
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"用户 %@ 下麦成功",user.userId]];
             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                 [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"下麦失败 code: %ld",(long)code]];
             }];
@@ -340,16 +324,15 @@ audience:
 
 //锁麦
 - (void)lockSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
-    NSString *status = !seatInfo.isLocked ? @"锁定" : @"解锁";
+    NSString *status = seatInfo.isLocked ? @"解锁" : @"锁定";
     [[RCVoiceRoomEngine sharedInstance] lockSeat:@[@(index)] lock:!seatInfo.isLocked success:^{
         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"座位:%ld %@ 成功",index,status]];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"座位 %@ 失败 code: %ld",status,code]];
     }];
-
 }
 
-//锁麦
+//静音
 - (void)muteSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
     [[RCVoiceRoomEngine sharedInstance] muteSeat:@[@(index)] mute:!seatInfo.isMuted success:^{
         NSString *status = !seatInfo.isMuted ? @"静音成功" : @"解除静音成功";
@@ -362,20 +345,11 @@ audience:
 
 //踢人
 - (void)kickUserFromSeat:(NSInteger)seatIndex {
-    RCVoiceUserInfo *seatUser = nil;
-    for (RCVoiceUserInfo *user in self.seatUserlist) {
-        if (user.index == (unsigned long)seatIndex) {
-            seatUser = user;
-            break;
-        }
-    }
-    if (seatUser == nil) {
-        [SVProgressHUD showErrorWithStatus:@""];
-        return;
-    }
+    NSString *seatKey = [NSString stringWithFormat:@"%zd",seatIndex];
+    RCVoiceUserInfo *user = self.seatUserMap[seatKey];
     
-    [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:seatUser.userId content:@"" success:^{
-        [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"用户:%@已经被踢出座位",seatUser.userId]];
+    [[RCVoiceRoomEngine sharedInstance] kickUserFromSeat:user.userId content:@"" success:^{
+        [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"用户:%@已经被踢出座位",user.userId]];
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
         [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"踢出用户失败 code: %ld",(long)code]];
     }];
@@ -421,7 +395,7 @@ audience:
                 if (self.listView.listType == UserListTypeRoomCreator && self.isPK) {
                     [self pk_sendPKAction:UserListActionInvite userId:uid];
                 } else {
-                    if (self.seatUserlist.count >= self.roomInfo.seatCount) {
+                    if (self.seatlist.count >= self.roomInfo.seatCount) {
                         [[RCVoiceRoomEngine sharedInstance] sendInvitation:uid content:@"yaoqing" success:^(NSString * _Nonnull invataionId) {
                             
                         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
@@ -476,7 +450,9 @@ audience:
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SeatInfoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    [cell updateCell:self.seatlist[indexPath.row] withSeatIndex:indexPath.row];
+    NSString *seatKey = [NSString stringWithFormat:@"%zd",indexPath.row];
+    RCVoiceUserInfo *user = self.seatUserMap[seatKey];
+    [cell updateCell:self.seatlist[indexPath.row] withSeatUser:user seatIndex:indexPath.row];
     return cell;
 }
 
@@ -503,11 +479,38 @@ audience:
 
 
 - (void)onSeatUserInfoDidUpdate:(NSArray<RCVoiceUserInfo *> *)seatUserlist {
-    self.seatUserlist = seatUserlist;
+    [self.seatUserMap removeAllObjects];
+    for (RCVoiceUserInfo *user in seatUserlist) {
+        NSString *seatIndexKey = [NSString stringWithFormat:@"%zd",user.index];
+        [self.seatUserMap setObject:user forKey:seatIndexKey];
+    }
+    [self.collectionView reloadData];
 }
 
-- (void)requestSeatListDidChange:(NSArray<RCVoiceRequesterInfo *> *)requesters {
-    self.requesters = requesters;
+- (void)requestSeatListDidChange {
+    [[RCVoiceRoomEngine sharedInstance] getRequesterInfoList:^(NSArray<RCVoiceRequesterInfo *> * _Nonnull reqs) {
+        if (reqs.count == 0) {
+            [self.requestRoomUsers removeAllObjects];
+            return;
+        }
+          
+        NSMutableArray *uids = [NSMutableArray array];
+        for (RCVoiceRequesterInfo *req in reqs) {
+            [uids addObject:req.userId];
+        }
+        [WebService fetchUserInfoListWithUids:uids responseClass:[RoomUserListResponse class] success:^(id  _Nullable responseObject) {
+            RoomUserListResponse *resObj = (RoomUserListResponse *)responseObject;
+            if (resObj.code.integerValue == StatusCodeSuccess) {
+                [self.requestRoomUsers removeAllObjects];
+                [self.requestRoomUsers addObjectsFromArray:resObj.data];
+            }
+        } failure:^(NSError * _Nonnull error) {
+            Log(@"fetchUserInfoListWithUids failed code: %ld",(long)error.code);
+        }];
+        
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        
+    }];
 }
 
 
@@ -586,7 +589,6 @@ audience:
 }
 
 - (void)invitationDidReceive:(nonnull NSString *)invitationId from:(nonnull NSString *)userId content:(nonnull NSString *)content {
-    
     NSData *jsonData = [content dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dict;
     if (jsonData != nil) {
@@ -634,7 +636,7 @@ audience:
         make.size.equalTo(@(CGSizeMake(44, 44)));
     }];
     
-    self.userLabel.text = [NSString stringWithFormat:@"用户id：%@\n用户名：%@", UserManager.userId,UserManager.userName];
+    self.userLabel.text = [NSString stringWithFormat:@"房主用户名：%@\n当前用户名：%@", self.roomResp.createUser.userName,UserManager.userName];
     [self.view addSubview:self.userLabel];
     [self.userLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(5);
@@ -660,7 +662,7 @@ audience:
     [micDisableButton setTitle:@"打开麦克风" forState:UIControlStateSelected];
     
     NSArray *container1;
-    if (self.isCreate) {
+    if (self.currentUserIsRoomOwner) {
         container1 = @[requestListButton,userListButton,speakerEnableButton,micDisableButton];
     } else {
         container1 = @[requestListButton,userListButton,cancelRequestButton];
@@ -677,7 +679,7 @@ audience:
     UIButton *muteAllButton = [self actionButtonFactory:@"全员静音" withAction:@selector(muteAll:)];
     UIButton *lockAllButton = [self actionButtonFactory:@"全员锁麦" withAction:@selector(lockAll:)];
     NSArray *container2;
-    if (self.isCreate) {
+    if (self.currentUserIsRoomOwner) {
         container2 = @[muteAllButton,lockAllButton];
     } else {
         container2 = @[speakerEnableButton,micDisableButton];
@@ -769,7 +771,7 @@ audience:
 
 - (UserListView *)listView {
     if (_listView == nil) {
-        UserListView *listView = [[UserListView alloc] initWithHost:self.isCreate];
+        UserListView *listView = [[UserListView alloc] initWithHost:self.currentUserIsRoomOwner];
         listView.frame = CGRectMake(10, kScreenHeight, kScreenWidth - 20, kScreenHeight - 300);
         WeakSelf(self)
         [listView setHandler:^(NSString * _Nonnull uid, NSInteger action) {

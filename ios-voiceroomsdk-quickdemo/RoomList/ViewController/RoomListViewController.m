@@ -32,6 +32,12 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self buildLayout];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
     [WebService roomListWithSize:20 page:0 type:RoomTypeVoice responseClass:[RoomListResponse class] success:^(id  _Nullable responseObject) {
         RoomListResponse *res = (RoomListResponse *)responseObject;
         if (res.code.integerValue == StatusCodeSuccess) {
@@ -45,11 +51,6 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
     } failure:^(NSError * _Nonnull error) {
         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"房间数据获取失败 code:%ld",(long)error.code]];
     }];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
