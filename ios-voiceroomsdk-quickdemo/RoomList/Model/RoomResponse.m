@@ -1,6 +1,6 @@
-#import "CreateRoomResponse.h"
+#import "RoomResponse.h"
 
-@implementation CreateRoomResponse
+@implementation RoomResponse
 @end
 
 @implementation RCSceneRoom

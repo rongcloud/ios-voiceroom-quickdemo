@@ -36,7 +36,7 @@
 		DCDA63B12730E71500FD3335 /* RoomListResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B02730E71500FD3335 /* RoomListResponse.m */; };
 		DCDA63B42730E7BF00FD3335 /* NSArray+VRSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B32730E7BF00FD3335 /* NSArray+VRSModel.m */; };
 		DCDA63B72731117400FD3335 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B62731117400FD3335 /* NSString+MD5.m */; };
-		DCDA63BA273112E600FD3335 /* CreateRoomResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B9273112E600FD3335 /* CreateRoomResponse.m */; };
+		DCDA63BA273112E600FD3335 /* RoomResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA63B9273112E600FD3335 /* RoomResponse.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,8 +137,8 @@
 		DCDA63B32730E7BF00FD3335 /* NSArray+VRSModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VRSModel.m"; sourceTree = "<group>"; };
 		DCDA63B52731117400FD3335 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
 		DCDA63B62731117400FD3335 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
-		DCDA63B8273112E600FD3335 /* CreateRoomResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateRoomResponse.h; sourceTree = "<group>"; };
-		DCDA63B9273112E600FD3335 /* CreateRoomResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateRoomResponse.m; sourceTree = "<group>"; };
+		DCDA63B8273112E600FD3335 /* RoomResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomResponse.h; sourceTree = "<group>"; };
+		DCDA63B9273112E600FD3335 /* RoomResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomResponse.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,8 +204,8 @@
 			children = (
 				DCDA63AF2730E71500FD3335 /* RoomListResponse.h */,
 				DCDA63B02730E71500FD3335 /* RoomListResponse.m */,
-				DCDA63B8273112E600FD3335 /* CreateRoomResponse.h */,
-				DCDA63B9273112E600FD3335 /* CreateRoomResponse.m */,
+				DCDA63B8273112E600FD3335 /* RoomResponse.h */,
+				DCDA63B9273112E600FD3335 /* RoomResponse.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -688,7 +688,7 @@
 				CB25664E26EB31CD0041425B /* RoomListTableViewCell.m in Sources */,
 				DC784433273225A400398038 /* UserListView.m in Sources */,
 				DC78442E2732250900398038 /* RoomUserListResponse.m in Sources */,
-				DCDA63BA273112E600FD3335 /* CreateRoomResponse.m in Sources */,
+				DCDA63BA273112E600FD3335 /* RoomResponse.m in Sources */,
 				DC317FBB272FE9EC0075D7F0 /* LoginResponse.m in Sources */,
 				DC784434273225A400398038 /* UserListCell.m in Sources */,
 			);

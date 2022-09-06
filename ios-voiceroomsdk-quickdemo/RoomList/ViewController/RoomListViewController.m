@@ -10,18 +10,17 @@
 #import <RCVoiceRoomLib/RCVoiceRoomLib.h>
 #import <Masonry.h>
 #import "VoiceRoomViewController.h"
-//#import "RoomInfo.h"
 #import "UIColor+Hex.h"
 #import <SVProgressHUD.h>
 #import <AVFoundation/AVFoundation.h>
 #import "RoomListResponse.h"
 #import "NSString+MD5.h"
-#import "CreateRoomResponse.h"
+#import "RoomResponse.h"
 
 @interface RoomListViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray<RoomListRoom *> *roomlist;
+@property (nonatomic, strong) NSMutableArray<RCSceneRoom *> *roomlist;
 @property (nonatomic, strong) UIBarButtonItem *createRoomButton;
 @property (nonatomic, strong) UITextField *roomNameField;
 
@@ -114,9 +113,9 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 
 
 - (void)checkRoomToEnterOrCreate:(NSString *)roomName {
-    [WebService checkCreatedRoom:RoomTypeVoice responseClass:[CreateRoomResponse class] success:^(id  _Nullable responseObject) {
+    [WebService checkCreatedRoom:RoomTypeVoice responseClass:[RoomResponse class] success:^(id  _Nullable responseObject) {
         if (responseObject) {
-            CreateRoomResponse *res = (CreateRoomResponse *)responseObject;
+            RoomResponse *res = (RoomResponse *)responseObject;
             if (res.data != nil) {
                 [self enterExist:res.data];
             } else {
@@ -128,11 +127,11 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
     }];
 }
 
-- (void)enterExist:(RCSceneRoom *)roomInfo {
-    NSString *existMsg = [NSString stringWithFormat:@"已创建房间: %@",roomInfo.roomName];
+- (void)enterExist:(RCSceneRoom *)roomResp {
+    NSString *existMsg = [NSString stringWithFormat:@"已创建房间: %@",roomResp.roomName];
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"用户已创建房间" message:existMsg preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *createAction = [UIAlertAction actionWithTitle:@"进入房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        VoiceRoomViewController *voiceRoomVc = [[VoiceRoomViewController alloc] initWithRoomId:roomInfo.roomId roomInfo:nil];
+        VoiceRoomViewController *voiceRoomVc = [[VoiceRoomViewController alloc] initWithRoom:roomResp roomInfo:nil];
         [self.navigationController pushViewController:voiceRoomVc animated:YES];
     }];
     
@@ -146,16 +145,16 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 - (void)createNew:(NSString *)roomName {
     NSString *password = @"1234";
     NSString *imageUrl = @"";
-    [WebService createRoomWithName:roomName isPrivate:0 backgroundUrl:imageUrl themePictureUrl:imageUrl password:password type:RoomTypeVoice kv:@[] responseClass:[CreateRoomResponse class] success:^(id  _Nullable responseObject) {
+    [WebService createRoomWithName:roomName isPrivate:0 backgroundUrl:imageUrl themePictureUrl:imageUrl password:password type:RoomTypeVoice kv:@[] responseClass:[RoomResponse class] success:^(id  _Nullable responseObject) {
         if (responseObject) {
-            CreateRoomResponse *res = (CreateRoomResponse *)responseObject;
+            RoomResponse *res = (RoomResponse *)responseObject;
             if (res.data != nil) {
                 [SVProgressHUD showSuccessWithStatus:LocalizedString(@"create_room_success")];\
                 RCVoiceRoomInfo *roomInfo = [[RCVoiceRoomInfo alloc] init];
                 roomInfo.roomName = roomName;
                 roomInfo.seatCount = 9;
                 roomInfo.isFreeEnterSeat = NO;
-                VoiceRoomViewController *voiceRoomVc = [[VoiceRoomViewController alloc] initWithRoomId:res.data.roomId roomInfo:roomInfo];
+                VoiceRoomViewController *voiceRoomVc = [[VoiceRoomViewController alloc] initWithRoom:res.data roomInfo:roomInfo];
                 [self.navigationController pushViewController:voiceRoomVc animated:YES];
             } else {
                 Log(@"network logic error code: %ld",(long)res.code);
@@ -177,7 +176,7 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RoomListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:roomCellIdentifier];
-    RoomListRoom *room = self.roomlist[indexPath.row];
+    RCSceneRoom *room = self.roomlist[indexPath.row];
     [cell updateCellWithName:room.roomName roomId:room.roomId];
     return cell;
 }
@@ -185,7 +184,7 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 #pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    VoiceRoomViewController *vc = [[VoiceRoomViewController alloc] initWithRoomId:self.roomlist[indexPath.row].roomId roomInfo:nil];
+    VoiceRoomViewController *vc = [[VoiceRoomViewController alloc] initWithRoom:self.roomlist[indexPath.row] roomInfo:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

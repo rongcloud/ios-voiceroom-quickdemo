@@ -19,7 +19,7 @@
 static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @interface VoiceRoomViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, RCVoiceRoomDelegate>
 
-@property (nonatomic, copy) NSString *roomId;
+@property (nonatomic, strong) RCSceneRoom *roomResp;
 
 @property (nonatomic, assign) BOOL isCreate;
 
@@ -65,10 +65,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 @implementation VoiceRoomViewController
 
-
-- (instancetype)initWithRoomId:(NSString *)roomId roomInfo:(RCVoiceRoomInfo *)roomInfo {
+- (instancetype)initWithRoom:(RCSceneRoom *)roomResp roomInfo:(RCVoiceRoomInfo *)roomInfo {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        self.roomId = roomId;
+        self.roomResp = roomResp;
         self.roomInfo = roomInfo;
         self.isCreate = (roomInfo != nil);
     }
@@ -77,14 +76,18 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     [RCVoiceRoomEngine.sharedInstance setDelegate:self];
+    
+    NSString *roomId = self.roomResp.roomId;
     if (self.isCreate) {
-        [self createVoiceRoom:_roomId info:_roomInfo];
+        [self createVoiceRoom:roomId info:_roomInfo];
     } else {
-        [self joinVoiceRoom:_roomId];
+        [self joinVoiceRoom:roomId];
     }
+    
     self.requestSeatIndex = -1;
-    // 设置语聊房代理
+    
     [self buildLayout];
    
     // 加载PK模块
@@ -93,18 +96,20 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }
     
     [self updateRoomOnlineStatus];
+    
     [[RCVoiceRoomEngine sharedInstance] notifyVoiceRoom:@"refreshBackgroundImage" content:@""];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.title = self.roomResp.roomName;
+    [self.navigationItem setHidesBackButton:YES];
 }
 
 #pragma mark - Private Method
 
 - (void)updateRoomOnlineStatus {
-    [WebService updateOnlineRoomStatusWithRoomId:self.roomId responseClass:nil success:^(id  _Nullable responseObject) {
+    [WebService updateOnlineRoomStatusWithRoomId:self.roomResp.roomId responseClass:nil success:^(id  _Nullable responseObject) {
         Log(@"update room online status success");
     } failure:^(NSError * _Nonnull error) {
         Log(@"update room online status fail code : %ld",error.code);
@@ -131,7 +136,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     
     if (self.isCreate) {
         //主播端调用业务接口销毁房间
-        [WebService deleteRoomWithRoomId:self.roomId success:^(id  _Nullable responseObject) {
+        [WebService deleteRoomWithRoomId:self.roomResp.roomId success:^(id  _Nullable responseObject) {
             leaveRoom();
         } failure:^(NSError * _Nonnull error) {
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"离开房间失败 code: %ld",error.code]];
@@ -144,7 +149,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     
 }
 
-//加入房间
+
 - (void)createVoiceRoom:(NSString *)roomId info:(RCVoiceRoomInfo *)roomInfo {
     [[RCVoiceRoomEngine sharedInstance] createAndJoinRoom:roomId room:roomInfo success:^{
         [SVProgressHUD showSuccessWithStatus:@"创建成功"];
@@ -153,7 +158,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
-//离开房间
 - (void)joinVoiceRoom:(NSString *)roomId {
     [[RCVoiceRoomEngine sharedInstance] joinRoom:roomId success:^{
         [SVProgressHUD showSuccessWithStatus:@"加入房间成功"];
@@ -191,7 +195,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 //获取房间内用户列表
 - (void)fetchUserList {
-    [WebService roomUserListWithRoomId:self.roomId responseClass:[RoomUserListResponse class] success:^(id  _Nullable responseObject) {
+    [WebService roomUserListWithRoomId:self.roomResp.roomId responseClass:[RoomUserListResponse class] success:^(id  _Nullable responseObject) {
         Log(@"host network fetch room users list success");
         [SVProgressHUD showSuccessWithStatus:LocalizedString(@"live_fetch_user_list_success")];
         RoomUserListResponse *resObj = (RoomUserListResponse *)responseObject;
@@ -617,7 +621,6 @@ audience:
 #pragma mark -Layout Subviews
 
 - (void)buildLayout {
-    self.title = @"语聊房";
     self.view.backgroundColor = [UIColor colorFromHexString:@"#F6F8F9"];
     [self.view addSubview:self.backgroundImageView];
     [self.backgroundImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -626,17 +629,17 @@ audience:
     
     [self.view addSubview:self.quitButton];
     [self.quitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view).inset(20);
-        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(20);
+        make.right.equalTo(self.view);
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
         make.size.equalTo(@(CGSizeMake(44, 44)));
     }];
     
-    self.userLabel.text = [NSString stringWithFormat:@"当前用户id：%@\n当前用户名：%@", UserManager.userId,UserManager.userName];
+    self.userLabel.text = [NSString stringWithFormat:@"用户id：%@\n用户名：%@", UserManager.userId,UserManager.userName];
     [self.view addSubview:self.userLabel];
     [self.userLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(20);
-        make.right.equalTo(self.view).offset(-20);
-        make.centerY.equalTo(self.quitButton).offset(30);
+        make.left.equalTo(self.view).offset(5);
+        make.right.equalTo(self.quitButton.mas_left);
+        make.centerY.equalTo(self.quitButton);
     }];
     
     [self.view addSubview:self.collectionView];

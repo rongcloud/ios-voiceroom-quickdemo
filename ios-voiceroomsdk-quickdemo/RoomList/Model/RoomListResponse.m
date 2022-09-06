@@ -4,17 +4,14 @@
 @end
 
 @implementation RoomListData
-- (void)setRooms:(NSArray<RoomListRoom *> *)rooms {
+- (void)setRooms:(NSArray<RCSceneRoom *> *)rooms {
     if (rooms != nil && rooms.count > 0 && [rooms.firstObject isKindOfClass:[NSDictionary class]]) {
-        _rooms = [rooms vrs_jsonsToModelsWithClass:[RoomListRoom class]];
+        _rooms = [rooms vrs_jsonsToModelsWithClass:[RCSceneRoom class]];
     } else {
         _rooms = rooms;
     }
 }
 @end
 
-@implementation RoomListRoom
-@end
+ 
 
-@implementation RoomListCreateUser
-@end

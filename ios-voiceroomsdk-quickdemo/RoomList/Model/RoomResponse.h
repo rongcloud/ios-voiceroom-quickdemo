@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Object interfaces
 
-@interface CreateRoomResponse : NSObject
+@interface RoomResponse : NSObject
 @property (nonatomic, assign) NSInteger code;
 @property (nonatomic, copy)   NSString *msg;
 @property (nonatomic, strong) RCSceneRoom *data;
