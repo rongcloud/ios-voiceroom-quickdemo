@@ -16,7 +16,7 @@ PODS:
     - AFNetworking/NSURLSession
   - Masonry (1.1.0)
   - RCSceneLog (0.0.1.2)
-  - RCVoiceRoomLib (2.0.8.4):
+  - RCVoiceRoomLib (3.0.0):
     - RCSceneLog
     - RongCloudIM/IMLib
     - RongCloudRTC/RongRTCLib
@@ -72,7 +72,7 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   RCSceneLog: c38de10f8ccd4aa65eb9ac7c0a5c6b2042e7579e
-  RCVoiceRoomLib: 69b8adfe01e2de0da8aa25e096a93592f9d6e254
+  RCVoiceRoomLib: 77a81319ded9fd0e22d88a4dab9eb6e3d04e7c5f
   RongCloudIM: 09269332ab90c9a8d966f38b25410c8d2629eee6
   RongCloudRTC: 0fc0eb904bd77841701c6bc6afd7b076262615ef
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6

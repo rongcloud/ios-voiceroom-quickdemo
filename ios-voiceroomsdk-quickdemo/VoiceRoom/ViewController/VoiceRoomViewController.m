@@ -469,7 +469,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         if ([user.userId isEqualToString:UserManager.userId]) {
             self.currentUserOnSeat = YES;
         }
-        NSString *seatIndexKey = [NSString stringWithFormat:@"%zd",user.index];
+        NSString *seatIndexKey = [NSString stringWithFormat:@"%zd",user.seatIndex];
         [self.seatUserMap setObject:user forKey:seatIndexKey];
     }
     [self.collectionView reloadData];
