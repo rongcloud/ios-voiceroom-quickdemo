@@ -34,13 +34,12 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
     [self buildLayout];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    
+- (void)refreshRoomList {
     [WebService roomListWithSize:20 page:0 type:RoomTypeVoice responseClass:[RoomListResponse class] success:^(id  _Nullable responseObject) {
+        [self.tableView.refreshControl endRefreshing];
         RoomListResponse *res = (RoomListResponse *)responseObject;
         if (res.code.integerValue == StatusCodeSuccess) {
+            [self.roomlist removeAllObjects];
             [self.roomlist addObjectsFromArray:res.data.rooms];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
@@ -49,8 +48,15 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"房间数据获取失败 code:%d",res.code.intValue]];
         }
     } failure:^(NSError * _Nonnull error) {
+        [self.tableView.refreshControl endRefreshing];
         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"房间数据获取失败 code:%ld",(long)error.code]];
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [self refreshRoomList];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -198,6 +204,13 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
         _tableView.dataSource = self;
         _tableView.tableFooterView = [UIView new];
         [_tableView registerClass:[RoomListTableViewCell class] forCellReuseIdentifier:roomCellIdentifier];
+    
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        refreshControl.tintColor = [UIColor grayColor];
+        refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"最新房间列表"];
+        [refreshControl addTarget:self action:@selector(refreshRoomList) forControlEvents:UIControlEventValueChanged];
+        _tableView.refreshControl = refreshControl;
+        
     }
     return _tableView;
 }

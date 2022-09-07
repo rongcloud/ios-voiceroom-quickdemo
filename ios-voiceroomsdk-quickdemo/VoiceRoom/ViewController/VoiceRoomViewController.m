@@ -43,23 +43,13 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @property (nonatomic, strong) UserListView *listView;
 
 //主播是否已经上麦
-@property (nonatomic, assign, getter=isOnTheSeat) BOOL onTheSeat;
+@property (nonatomic, assign) BOOL currentUserOnSeat;
 
 //观众申请的麦位序号
 @property (nonatomic, assign) NSInteger requestSeatIndex;
 
-//是否为PK直播间
-@property (nonatomic, assign, getter=isPK) BOOL pk;
-
 @property (nonatomic, strong) RCSceneRoom *roomToPk;
 
-
-#warning 如下方法需要在PK分类中重载
-- (void)pk_loadPKModule;
-- (void)pk_invite;
-- (void)pk_quit;
-- (void)pk_sendPKAction:(NSInteger)action userId:(NSString *)userId;
-- (void)pk_messageDidReceive:(nonnull RCMessage *)message;
 @end
 
 @implementation VoiceRoomViewController
@@ -103,11 +93,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     
     self.requestSeatIndex = -1;
    
-    // 加载PK模块
-    if (self.isPK) {
-        [self pk_loadPKModule];
-    }
-    
     [self updateRoomOnlineStatus];
     
     [[RCVoiceRoomEngine sharedInstance] notifyVoiceRoom:@"refreshBackgroundImage" content:@""];
@@ -134,8 +119,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 // 离开房间
 - (void)quitRoom {
     void(^leaveRoom)(void) = ^(void){
-        if (self.isPK) {
-            [self pk_quit];
+        if (self.roomToPk) {
+            [self endPKWithOther];
         }
         [[RCVoiceRoomEngine sharedInstance] leaveRoom:^{
             [SVProgressHUD showSuccessWithStatus:@"离开房间成功"];
@@ -280,9 +265,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 //上麦
 - (void)enterSeatWithSeatInfo:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)index {
     if (self.currentUserIsRoomOwner || self.roomInfo.isFreeEnterSeat) {
-        if (self.isOnTheSeat) { // 已经在麦上，换座位
+        if (self.currentUserOnSeat) { // 已经在麦上，换座位
             [[RCVoiceRoomEngine sharedInstance] switchSeatTo:index success:^{
-                self.onTheSeat = YES;
                 [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                 [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"换座位失败 code: %ld",(long)code]];
@@ -290,7 +274,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         } else { //不在麦上，直接上麦
             [[RCVoiceRoomEngine sharedInstance] enterSeat:index success:^{
                 [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
-                self.onTheSeat = YES;
             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                 [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
             }];
@@ -312,7 +295,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     if ([user.userId isEqualToString:UserManager.userId]) { // 自己所在的麦位
         [[RCVoiceRoomEngine sharedInstance] leaveSeatWithSuccess:^{
             [SVProgressHUD showSuccessWithStatus:@"下麦成功"];
-            self.onTheSeat = NO;
+            self.currentUserOnSeat = NO;
         } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
             NSString *status = [NSString stringWithFormat:@"下麦: %ld, %@",code,msg];
             [SVProgressHUD showErrorWithStatus:status];
@@ -401,35 +384,27 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
             break;
             //邀请用户上麦
         case UserListActionInvite:
-            {
-                if (self.listView.listType == UserListTypeRoomCreator && self.isPK) {
-                    [self pk_sendPKAction:UserListActionInvite userId:uid];
-                } else {
-                    if (self.seatlist.count >= self.roomInfo.seatCount) {
-                        [[RCVoiceRoomEngine sharedInstance] sendInvitation:uid content:@"yaoqing" success:^(NSString * _Nonnull invataionId) {
-                            
-                        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-                            
-                        }];
-                    } else {
-                        [SVProgressHUD showErrorWithStatus:@"当前没有空置的麦位"];
-                    }
-                }
+        {
+            if (self.seatlist.count >= self.roomInfo.seatCount) {
+                [[RCVoiceRoomEngine sharedInstance] sendInvitation:uid content:@"yaoqing" success:^(NSString * _Nonnull invataionId) {
+                    
+                } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                    
+                }];
+            } else {
+                [SVProgressHUD showErrorWithStatus:@"当前没有空置的麦位"];
             }
+        }
             break;
             //根据uid取消对某个用户的上麦邀请
         case UserListActionCancelInvite:
-            {
-                if (self.listView.listType == UserListTypeRoomCreator && self.isPK) {
-                    [self pk_sendPKAction:UserListActionCancelInvite userId:uid];
-                } else {
-                    [[RCVoiceRoomEngine sharedInstance] cancelInvitation:uid success:^{
-                        
-                    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-                        
-                    }];
-                }
-            }
+        {
+            [[RCVoiceRoomEngine sharedInstance] cancelInvitation:uid success:^{
+                
+            } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                
+            }];
+        }
             break;
         default:
             break;
@@ -491,6 +466,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)onSeatUserInfoDidUpdate:(NSArray<RCVoiceUserInfo *> *)seatUserlist {
     [self.seatUserMap removeAllObjects];
     for (RCVoiceUserInfo *user in seatUserlist) {
+        if ([user.userId isEqualToString:UserManager.userId]) {
+            self.currentUserOnSeat = YES;
+        }
         NSString *seatIndexKey = [NSString stringWithFormat:@"%zd",user.index];
         [self.seatUserMap setObject:user forKey:seatIndexKey];
     }
@@ -533,11 +511,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
-// 聊天室消息回调
-- (void)messageDidReceive:(nonnull RCMessage *)message {
-    Log(@"PKMSG: objectName %@",message.objectName);
-    [self pk_messageDidReceive:message];
-}
 
 - (void)requestSeatRespones:(BOOL)isAccept content:(NSString *)content {
     if (isAccept) {
@@ -550,8 +523,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         [SVProgressHUD showErrorWithStatus:@"主播拒绝上麦请求"];
     }
 }
-
-
 
 // 通过
 - (void)roomNotificationDidReceive:(nonnull NSString *)name content:(nonnull NSString *)content {
@@ -829,15 +800,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     return _listView;
 }
 
-//如下方法在分类中实现
-- (void)pk_loadPKModule {}
-- (void)pk_invite {}
-- (void)pk_quit {}
-- (void)pk_sendPKAction:(NSInteger)action userId:(NSString *)userId {}
-- (void)pk_messageDidReceive:(nonnull RCMessage *)message {}
-
-
-
 - (void)pickOtherRoomOwnerToPk {
     [WebService roomListWithSize:20 page:0 type:RoomTypeVoice responseClass:[RoomListResponse class] success:^(id  _Nullable responseObject) {
         RoomListResponse *res = (RoomListResponse *)responseObject;
@@ -878,9 +840,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 - (void)endPKWithOther {
     [[RCVoiceRoomEngine sharedInstance] quitPK:^{
-        
+        self.roomToPk = nil;
     } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
-        
+        [self errorWithReason:@"结束PK失败" code:code msg:msg];
     }];
 }
 
@@ -933,6 +895,11 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)cancelPKInvitationDidReceiveFromRoom:(NSString *)inviterRoomId byUser:(NSString *)inviterUserId {
     NSString *status = [NSString stringWithFormat:@"收到%@ 取消PK邀请",inviterUserId];
     [SVProgressHUD showSuccessWithStatus:status];
+}
+
+- (void)errorWithReason:(NSString *)reason code:(NSInteger)code msg:(NSString *)msg {
+    NSString *status = [NSString stringWithFormat:@"%@ %zd %@",reason, code, msg];
+    [SVProgressHUD showErrorWithStatus:status];
 }
 
 @end
