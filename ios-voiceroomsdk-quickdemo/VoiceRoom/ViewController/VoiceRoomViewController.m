@@ -146,16 +146,23 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"离开房间失败 code: %ld",(long)code]];
         }];
     };
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请选择操作" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"离开房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        leaveRoom();
+    }]];
     
     if (_currentUserIsRoomOwner) {
-        [WebService deleteRoomWithRoomId:self.roomResp.roomId success:^(id  _Nullable responseObject) {
-            leaveRoom();
-        } failure:^(NSError * _Nonnull error) {
-            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"离开房间失败 code: %ld",error.code]];
-        }];
-    } else {
-        leaveRoom();
+        [alert addAction:[UIAlertAction actionWithTitle:@"关闭删除房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [WebService deleteRoomWithRoomId:self.roomResp.roomId success:^(id  _Nullable responseObject) {
+                leaveRoom();
+            } failure:^(NSError * _Nonnull error) {
+                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"离开房间失败 code: %ld",error.code]];
+            }];
+        }]];
     }
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 
