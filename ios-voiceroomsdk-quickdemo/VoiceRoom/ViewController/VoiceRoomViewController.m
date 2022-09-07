@@ -15,6 +15,7 @@
 #import "RoomUserListResponse.h"
 #import "UserListView.h"
 #import <AVFoundation/AVFoundation.h>
+#import "RoomListResponse.h"
 
 static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 @interface VoiceRoomViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, RCVoiceRoomDelegate>
@@ -49,6 +50,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 //是否为PK直播间
 @property (nonatomic, assign, getter=isPK) BOOL pk;
+
+@property (nonatomic, strong) RCSceneRoom *roomToPk;
 
 
 #warning 如下方法需要在PK分类中重载
@@ -667,11 +670,14 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     UIButton *requestListButton = [self actionButtonFactory:@"申请列表" withAction:@selector(fetchRequestList)];
     UIButton *userListButton = [self actionButtonFactory:@"用户列表" withAction:@selector(fetchUserList)];
     UIButton *cancelRequestButton = [self actionButtonFactory:@"取消上麦申请" withAction:@selector(cancelRequest)];
+    
     UIButton *speakerEnableButton = [self actionButtonFactory:@"扬声器模式" withAction:@selector(speakerEnable:)];
     [speakerEnableButton setTitle:@"听筒模式" forState:UIControlStateSelected];
     speakerEnableButton.selected = YES;
+    
     UIButton *micDisableButton = [self actionButtonFactory:@"禁用麦克风" withAction:@selector(micDisable:)];
     [micDisableButton setTitle:@"打开麦克风" forState:UIControlStateSelected];
+
     
     NSArray *container1;
     if (self.currentUserIsRoomOwner) {
@@ -679,14 +685,35 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     } else {
         container1 = @[requestListButton,userListButton,cancelRequestButton];
     }
+    
     UIStackView *stackView1 = [self stackViewWithViews:container1];
     [self.view addSubview:stackView1];
     [stackView1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.view).offset(20);
         make.trailing.equalTo(self.view).offset(-20);
         make.bottom.mas_equalTo(self.view).offset(-120);
-        make.height.mas_equalTo(60);
+        make.height.mas_equalTo(50);
     }];
+    
+    
+    UIButton *pkButton = [self actionButtonFactory:@"随机邀请PK" withAction:@selector(pickOtherRoomOwnerToPk)];
+    UIButton *cancelPkButton = [self actionButtonFactory:@"取消PK邀请" withAction:@selector(cancelInvitePk)];
+    UIButton *mutePkButton = [self actionButtonFactory:@"静音对面PK房间" withAction:@selector(muteOtherPKRoom:)];
+    [mutePkButton setTitle:@"取消静音" forState:UIControlStateSelected];
+    UIButton *endPkButton = [self actionButtonFactory:@"结束PK" withAction:@selector(endPKWithOther)];
+    
+    NSArray *pkBtns = nil;
+    if (self.currentUserIsRoomOwner) {
+        pkBtns = @[pkButton, cancelPkButton, mutePkButton, endPkButton];
+    }
+    UIStackView *pkStackView = [self stackViewWithViews:pkBtns];
+    [self.view addSubview:pkStackView];
+    [pkStackView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.view).offset(20);
+        make.top.mas_equalTo(stackView1.mas_bottom);
+        make.height.mas_equalTo(50);
+    }];
+    
     
     UIButton *muteAllButton = [self actionButtonFactory:@"全员静音" withAction:@selector(muteAll:)];
     UIButton *lockAllButton = [self actionButtonFactory:@"全员锁麦" withAction:@selector(lockAll:)];
@@ -702,8 +729,8 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [stackView2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.view).offset(20);
         make.trailing.equalTo(self.view).offset(-20);
-        make.top.mas_equalTo(stackView1.mas_bottom);
-        make.height.mas_equalTo(60);
+        make.top.mas_equalTo(pkStackView.mas_bottom);
+        make.height.mas_equalTo(50);
     }];
     
     [self.view addSubview:self.listView];
@@ -713,7 +740,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = [UIColor colorFromHexString:@"#EF499A"];
     button.layer.cornerRadius = 6;
-    button.titleLabel.font = [UIFont systemFontOfSize:14];
+    button.titleLabel.font = [UIFont systemFontOfSize:12];
     [button setTitle:title forState: UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState: UIControlStateNormal];
     [button addTarget:self action:action forControlEvents: UIControlEventTouchUpInside];
@@ -801,5 +828,104 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)pk_quit {}
 - (void)pk_sendPKAction:(NSInteger)action userId:(NSString *)userId {}
 - (void)pk_messageDidReceive:(nonnull RCMessage *)message {}
+
+
+
+- (void)pickOtherRoomOwnerToPk {
+    [WebService roomListWithSize:20 page:0 type:RoomTypeVoice responseClass:[RoomListResponse class] success:^(id  _Nullable responseObject) {
+        RoomListResponse *res = (RoomListResponse *)responseObject;
+        if (res.code.integerValue == StatusCodeSuccess) {
+            for (RCSceneRoom *room in res.data.rooms) {
+                if ([room.roomName isEqualToString:@"meetYouOk"]) {
+                    self.roomToPk = room;
+                    break;
+                }
+            }
+            [[RCVoiceRoomEngine sharedInstance] sendPKInvitation:self.roomToPk.roomId invitee:self.roomToPk.createUser.userId success:^{
+                [SVProgressHUD showSuccessWithStatus:@"发起PK成功"];
+            } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                
+            }];
+        }
+    } failure:^(NSError * _Nonnull error) {
+    }];
+}
+
+
+- (void)cancelInvitePk {
+    [[RCVoiceRoomEngine sharedInstance] cancelPKInvitation:self.roomToPk.roomId invitee:self.roomToPk.createUser.userId success:^{
+        self.roomToPk = nil;
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        
+    }];
+}
+
+- (void)muteOtherPKRoom:(UIButton *)btn {
+    BOOL isToMute = !btn.selected;
+    [[RCVoiceRoomEngine sharedInstance] mutePKUser:isToMute success:^{
+        btn.selected = !btn.selected;
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            
+    }];
+}
+
+- (void)endPKWithOther {
+    [[RCVoiceRoomEngine sharedInstance] quitPK:^{
+        
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        
+    }];
+}
+
+
+/// 被邀请者拒绝 接受PK
+- (void)rejectPKInvitationDidReceiveFromRoom:(NSString *)inviteeRoomId byUser:(NSString *)initeeUserId {
+    NSString *status = [NSString stringWithFormat:@"%@ 拒绝PK",initeeUserId];
+    [SVProgressHUD showSuccessWithStatus:status];
+}
+
+- (void)pkOngoingWithInviterRoom:(NSString *)inviterRoomId
+               withInviterUserId:(NSString *)inviterUserId
+                 withInviteeRoom:(NSString *)inviteeRoomId
+               withInviteeUserId:(NSString *)inviteeUserId {
+    [SVProgressHUD showSuccessWithStatus:@"PK 进行中"];
+}
+
+/// 对方结束PK时会触发此回调
+- (void)pkDidFinish {
+    [SVProgressHUD showSuccessWithStatus:@"PK 结束"];
+}
+
+/// 收到邀请 PK 的回调
+- (void)pkInvitationDidReceiveFromRoom:(NSString *)inviterRoomId byUser:(NSString *)inviterUserId {
+    NSString *status = [NSString stringWithFormat:@"收到%@ PK邀请",inviterUserId];
+    
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:status message:@"请选择操作" preferredStyle:UIAlertControllerStyleActionSheet];
+
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[RCVoiceRoomEngine sharedInstance] responsePKInvitation:inviterRoomId inviter:inviterUserId accept:YES success:^{
+            [SVProgressHUD showSuccessWithStatus:@"接受邀请，开始PK"];
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            
+        }];
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[RCVoiceRoomEngine sharedInstance] responsePKInvitation:inviterRoomId inviter:inviterUserId accept:NO success:^{
+            [SVProgressHUD showSuccessWithStatus:@"已拒绝"];
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            
+        }];
+    }]];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:actionSheet animated:YES completion:nil];
+    
+}
+
+/// 收到 取消 PK 邀请回调
+- (void)cancelPKInvitationDidReceiveFromRoom:(NSString *)inviterRoomId byUser:(NSString *)inviterUserId {
+    NSString *status = [NSString stringWithFormat:@"收到%@ 取消PK邀请",inviterUserId];
+    [SVProgressHUD showSuccessWithStatus:status];
+}
 
 @end
