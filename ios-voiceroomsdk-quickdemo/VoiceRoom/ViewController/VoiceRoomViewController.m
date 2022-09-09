@@ -94,8 +94,6 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     self.requestSeatIndex = -1;
    
     [self updateRoomOnlineStatus];
-    
-    [[RCVoiceRoomEngine sharedInstance] notifyVoiceRoom:@"refreshBackgroundImage" content:@""];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -450,6 +448,9 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 #pragma mark - VoiceRoomLib Delegate
 
+- (void)roomDidOccurErrorWithDetails:(id<RCVoiceRoomError>)error {
+    
+}
 
 // 任何麦位的变化都会触发此回调。
 - (void)seatInfoDidUpdate:(NSArray<RCVoiceSeatInfo *> *)seatInfolist {
@@ -511,8 +512,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     }];
 }
 
-
-- (void)requestSeatRespones:(BOOL)isAccept content:(NSString *)content {
+- (void)requestSeatResponse:(BOOL)isAccept targetIndex:(NSInteger)targetIndex content:(NSString *)content {
     if (isAccept) {
         [[RCVoiceRoomEngine sharedInstance] enterSeat:self.requestSeatIndex success:^{
             [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
@@ -523,6 +523,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
         [SVProgressHUD showErrorWithStatus:@"主播拒绝上麦请求"];
     }
 }
+
 
 // 通过
 - (void)roomNotificationDidReceive:(nonnull NSString *)name content:(nonnull NSString *)content {
@@ -540,7 +541,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 // 某个麦位有人说话时会触发此回调
-- (void)speakingStateDidChange:(NSUInteger)seatIndex speakingState:(BOOL)isSpeaking {
+- (void)seatSpeakingStateChanged:(BOOL)speaking atIndex:(NSInteger)index audioLevel:(NSInteger)level {
     
 }
 
@@ -567,21 +568,21 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [self.navigationController popViewControllerAnimated:true];
 }
 
-// 用户被踢出房间时触发此回调
-- (void)userDidKickFromRoom:(nonnull NSString *)targetId byUserId:(nonnull NSString *)userId content:(nonnull NSString *)content {
+- (void)userDidKickFromRoom:(NSString *)operatorId userId:(NSString *)userId content:(NSString *)content {
     if (!self.currentUserIsRoomOwner) {
-        NSString *status = [NSString stringWithFormat:@"被%@踢出房间",userId];
+        NSString *status = [NSString stringWithFormat:@"被%@踢出房间",operatorId];
         [SVProgressHUD showSuccessWithStatus:status];
         [self quitRoom];
     }
 }
+
 
 // 用户下麦某个麦位触发此回调
 - (void)userDidLeaveSeat:(NSInteger)seatIndex user:(nonnull NSString *)userId {
     
 }
 
-- (void)invitationDidReceive:(nonnull NSString *)invitationId from:(nonnull NSString *)userId content:(nonnull NSString *)content {
+- (void)invitationDidReceive:(NSString *)invitationId from:(NSString *)userId content:(NSString *)content {
     NSString *title = [NSString stringWithFormat:@"%@邀请你上麦",userId];
     [self showAlertWithTitle:title completion:^(BOOL accept) {
         [[RCVoiceRoomEngine sharedInstance] responseInvitation:invitationId accept:accept content:@"" success:^{
