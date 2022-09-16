@@ -16,9 +16,10 @@
 #import "UserListView.h"
 #import <AVFoundation/AVFoundation.h>
 #import "RoomListResponse.h"
+#import "PLPlayerKit/PLPlayer.h"
 
 static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
-@interface VoiceRoomViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, RCVoiceRoomDelegate>
+@interface VoiceRoomViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, RCVoiceRoomDelegate, PLPlayerDelegate>
 
 @property (nonatomic, strong) RCSceneRoom *roomResp;
 
@@ -50,9 +51,23 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 
 @property (nonatomic, strong) RCSceneRoom *roomToPk;
 
+@property (nonatomic, strong) PLPlayer *cdnPlayer;
+
+@property (nonatomic, strong) PLPlayerOption *cdnPlayerOpt;
+
 @end
 
 @implementation VoiceRoomViewController
+
+- (PLPlayerOption *)cdnPlayerOpt {
+    if (!_cdnPlayerOpt) {
+        _cdnPlayerOpt = [PLPlayerOption defaultOption];
+        [_cdnPlayerOpt setOptionValue:@(kPLPLAY_FORMAT_FLV) forKey:PLPlayerOptionKeyTimeoutIntervalForMediaPackets];
+        [_cdnPlayerOpt setOptionValue:@(kPLLogInfo) forKey:PLPlayerOptionKeyLogLevel];
+    }
+    return _cdnPlayerOpt;
+}
+
 
 - (NSMutableDictionary<NSString *,RCVoiceUserInfo *> *)seatUserMap {
     if (!_seatUserMap) {
@@ -80,12 +95,18 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:NULL];
+    [[AVAudioSession sharedInstance] setActive:YES error:NULL];
+    
     [self buildLayout];
 
     [RCVoiceRoomEngine.sharedInstance setDelegate:self];
     
     NSString *roomId = self.roomResp.roomId;
+    [RCVoiceRoomEngine.sharedInstance setPushUrl:[self rtmpUrl:roomId isPush:YES]];
+
     if (self.roomInfo) {
+        _roomInfo.streamType = RCVoiceStreamTypeInnerCDN;
         [self createVoiceRoom:roomId info:_roomInfo];
     } else {
         [self joinVoiceRoom:roomId];
@@ -225,6 +246,40 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)lockAll:(UIButton *)sender {
 //    [[RCVoiceRoomEngine sharedInstance] lockOtherSeats:!sender.selected];
     sender.selected = !sender.selected;
+}
+
+- (void)changeCdnStreamType:(UIButton *)sender {
+    RCVoiceRoomInfo *newRoomInfo = [self.roomInfo copy];
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"切换" message:@"请选择类型" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"MCU" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        newRoomInfo.streamType = RCVoiceStreamTypeLive;
+        [[RCVoiceRoomEngine sharedInstance] setRoomInfo:newRoomInfo success:^{
+            
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            
+        }];
+    }]];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"内置CDN" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        newRoomInfo.streamType = RCVoiceStreamTypeInnerCDN;
+        [[RCVoiceRoomEngine sharedInstance] setRoomInfo:newRoomInfo success:^{
+            
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            
+        }];
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"三方CDN" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        newRoomInfo.streamType = RCVoiceStreamTypeCustomCDN;
+        [[RCVoiceRoomEngine sharedInstance] setRoomInfo:newRoomInfo success:^{
+            
+        } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+            
+        }];
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
 #pragma mark Functions
@@ -464,6 +519,44 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 
+/// 流数据类型变化
+/// @param streamType streamType
+- (void)streamTypeChange:(RCVoiceStreamType)streamType {
+    NSString *msg = [NSString stringWithFormat:@"流类型切换为 %zd",streamType];
+    [SVProgressHUD showSuccessWithStatus:msg];
+}
+
+- (NSString *)rtmpUrl:(NSString *)roomId isPush:(BOOL)isPush {
+    NSString *pushHost = @"rtmp://scene.bsy.push.rongcloud.net";
+    NSString *pullHost = @"rtmp://scene.bsy.pull.rongcloud.net";
+    NSString *host = isPush ? pushHost : pullHost;
+    return [NSString stringWithFormat:@"%@/rcrtc/%@", host, roomId];
+}
+/// 是否开启播放CDN
+/// @param roomId 房间Id
+/// @param isPlay 是否外置播放器播放
+- (void)playCDNStream:(NSString *)roomId isPlay:(BOOL)isPlay {
+    if (isPlay) {
+        _cdnPlayer = [PLPlayer playerLiveWithURL:[NSURL URLWithString:[self rtmpUrl:roomId isPush:NO]] option:nil];
+        [_cdnPlayer setDelegateQueue:dispatch_get_main_queue()];
+        _cdnPlayer.delegate = self;
+        [_cdnPlayer setVolume:1.0];
+        [_cdnPlayer play];
+    } else {
+        [_cdnPlayer stop];
+        _cdnPlayer = nil;
+    }
+}
+
+
+- (void)player:(PLPlayer *)player statusDidChange:(PLPlayerStatus)state {
+    
+}
+
+- (void)player:(PLPlayer *)player stoppedWithError:(NSError *)error {
+    
+}
+
 - (void)onSeatUserInfoDidUpdate:(NSArray<RCVoiceUserInfo *> *)seatUserlist {
     [self.seatUserMap removeAllObjects];
     for (RCVoiceUserInfo *user in seatUserlist) {
@@ -696,9 +789,11 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     
     UIButton *muteAllButton = [self actionButtonFactory:@"全员静音" withAction:@selector(muteAll:)];
     UIButton *lockAllButton = [self actionButtonFactory:@"全员锁麦" withAction:@selector(lockAll:)];
+    UIButton *cdnStreamTypeButton = [self actionButtonFactory:@"切换CDN" withAction:@selector(changeCdnStreamType:)];
+
     NSArray *container2;
     if (self.currentUserIsRoomOwner) {
-        container2 = @[muteAllButton,lockAllButton];
+        container2 = @[muteAllButton,lockAllButton,cdnStreamTypeButton];
     } else {
         container2 = @[speakerEnableButton,micDisableButton];
     }
