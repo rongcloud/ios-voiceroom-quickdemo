@@ -82,7 +82,7 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 
 #pragma mark - Private method
 - (void)handleCreateRoom:(UIBarButtonItem *)sender {
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle: UIAlertControllerStyleActionSheet];
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle: UIAlertControllerStyleAlert];
     WeakSelf(self)
 //    UIAlertAction *joinAction = [UIAlertAction actionWithTitle:@"创建PK房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 //        StrongSelf(weakSelf)
@@ -110,9 +110,8 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 
 - (void)pushVoiceRoomControllerWithType:(BOOL)isPK {
     NSString *roomName = [self generateRoomName];
-    NSString *password = [@"password" vrs_md5];
-    NSString *imageUrl = @"https://img2.baidu.com/it/u=2842763149,821152972&fm=26&fmt=auto";
-    [WebService createRoomWithName:roomName isPrivate:0 backgroundUrl:imageUrl themePictureUrl:imageUrl password:password type:RoomTypeVoice kv:@[] responseClass:[CreateRoomResponse class] success:^(id  _Nullable responseObject) {
+    NSString *imageUrl = @"";
+    [WebService createRoomWithName:roomName isPrivate:0 backgroundUrl:imageUrl themePictureUrl:imageUrl password:@"123" type:RoomTypeVoice kv:@[] responseClass:[CreateRoomResponse class] success:^(id  _Nullable responseObject) {
         if (responseObject) {
             Log(@"network create room success")
             CreateRoomResponse *res = (CreateRoomResponse *)responseObject;

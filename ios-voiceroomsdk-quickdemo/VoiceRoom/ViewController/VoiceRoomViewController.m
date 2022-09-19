@@ -550,7 +550,6 @@ audience:
 
 // 聊天室消息回调
 - (void)messageDidReceive:(nonnull RCMessage *)message {
-    Log(@"PKMSG: objectName %@",message.objectName);
     [self pk_messageDidReceive:message];
 }
 
@@ -594,11 +593,6 @@ audience:
     [SVProgressHUD showSuccessWithStatus:@"请求列表发生变化"];
 }
 
-// 房间发生了未知错误
-- (void)roomDidOccurError:(RCVoiceRoomErrorCode)code {
-    
-}
-
 // 通过
 - (void)roomNotificationDidReceive:(nonnull NSString *)name content:(nonnull NSString *)content {
     
@@ -615,8 +609,13 @@ audience:
 }
 
 // 某个麦位有人说话时会触发此回调
-- (void)speakingStateDidChange:(NSUInteger)seatIndex speakingState:(BOOL)isSpeaking {
-    
+
+- (void)seatSpeakingStateChanged:(BOOL)speaking atIndex:(NSInteger)index audioLevel:(NSInteger)level {
+    NSLog(@"seatSpeakingStateChanged speaking:%d atIndex: %zd ,audioLevel:%zd",speaking,index,level);
+}
+
+- (void)userSpeakingStateChanged:(BOOL)speaking userId:(NSString *)userId audioLevel:(NSInteger)level {
+    NSLog(@"userSpeakingStateChanged speaking:%d userId:%@ ,audioLevel:%zd",speaking,userId,level);
 }
 
 // 用户进入房间时会触发此回调
