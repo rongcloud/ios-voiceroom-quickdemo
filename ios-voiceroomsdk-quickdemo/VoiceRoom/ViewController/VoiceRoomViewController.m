@@ -106,7 +106,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [RCVoiceRoomEngine.sharedInstance setPushUrl:[self rtmpUrl:roomId isPush:YES]];
 
     if (self.roomInfo) {
-        _roomInfo.streamType = RCVoiceStreamTypeInnerCDN;
+        _roomInfo.streamType = RCVoiceStreamTypeLive;
         [self createVoiceRoom:roomId info:_roomInfo];
     } else {
         [self joinVoiceRoom:roomId];
@@ -527,9 +527,17 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 }
 
 - (NSString *)rtmpUrl:(NSString *)roomId isPush:(BOOL)isPush {
-    NSString *pushHost = @"rtmp://scene.bsy.push.rongcloud.net";
-    NSString *pullHost = @"rtmp://scene.bsy.pull.rongcloud.net";
+    NSString *pushHost = RCVO_PUSH_HOST;
+    NSString *pullHost = RCVO_PULL_HOST;
     NSString *host = isPush ? pushHost : pullHost;
+    if (host.length == 0) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"CDN配置" message:@"使用三方CDN，在VRSDefine.h里面配置 RCVO_PUSH_HOST/RCVO_PULL_HOST" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *knowAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alert addAction:knowAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        return nil;
+    }
     return [NSString stringWithFormat:@"%@/rcrtc/%@", host, roomId];
 }
 /// 是否开启播放CDN
