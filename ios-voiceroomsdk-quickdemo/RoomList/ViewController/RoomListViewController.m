@@ -88,7 +88,7 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
 }
 
 #pragma mark - Private method
-- (void)handleCreateRoom:(UIBarButtonItem *)sender {
+- (void)handleCreateRoom:(UIBarButtonItem *)sender {    
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"创建房间" message:@"输入房间名字" preferredStyle: UIAlertControllerStyleAlert];
     
     [actionSheet addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
@@ -109,14 +109,6 @@ static NSString * const roomCellIdentifier = @"RoomListTableViewCell";
     [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
-- (NSString *)generateRoomName {
-    NSDate *date = [NSDate date];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateStyle:NSDateFormatterFullStyle];
-    NSString *dateString = [formatter stringFromDate:date];
-    NSString *roomName = [NSString stringWithFormat:@"%@ %@",UserManager.userName,dateString];
-    return roomName;
-}
 
 
 - (void)checkRoomToEnterOrCreate:(NSString *)roomName {

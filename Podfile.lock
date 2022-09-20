@@ -18,9 +18,7 @@ PODS:
   - PLPlayerKit (3.4.9):
     - PLPlayerKit/iphoneos (= 3.4.9)
   - PLPlayerKit/iphoneos (3.4.9)
-  - RCSceneLog (0.0.1.2)
   - RCVoiceRoomLib (3.0.0):
-    - RCSceneLog
     - RongCloudIM/IMLib
     - RongCloudRTC/RongRTCLib
   - RongCloudIM/ChatRoom (5.2.4):
@@ -63,7 +61,6 @@ SPEC REPOS:
     - AFNetworking
     - Masonry
     - PLPlayerKit
-    - RCSceneLog
     - RongCloudIM
     - RongCloudRTC
     - SVProgressHUD
@@ -77,8 +74,7 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   PLPlayerKit: 6d377f241918be3737c811b84f8366de385c1f91
-  RCSceneLog: c38de10f8ccd4aa65eb9ac7c0a5c6b2042e7579e
-  RCVoiceRoomLib: 77a81319ded9fd0e22d88a4dab9eb6e3d04e7c5f
+  RCVoiceRoomLib: 7b98783c7942953c5c904a5ef6589665aa456764
   RongCloudIM: 09269332ab90c9a8d966f38b25410c8d2629eee6
   RongCloudRTC: 0fc0eb904bd77841701c6bc6afd7b076262615ef
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
