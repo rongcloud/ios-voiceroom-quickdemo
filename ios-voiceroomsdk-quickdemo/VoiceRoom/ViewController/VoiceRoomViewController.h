@@ -7,17 +7,13 @@
 
 #import <UIKit/UIKit.h>
 #import <RCVoiceRoomLib/RCVoiceRoomLib.h>
-@class UserListView;
+#import "RoomResponse.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class UserListView;
 
 @interface VoiceRoomViewController : UIViewController
 
-- (instancetype)initWithJoinRoomId:(NSString *)roomId;
-
-- (instancetype)initWithRoomId:(NSString *)roomId
-                      roomInfo:(RCVoiceRoomInfo *)roomInfo;
+- (instancetype)initWithRoom:(RCSceneRoom *)roomResp roomInfo:(RCVoiceRoomInfo *)roomInfo;
 
 @end
 
-NS_ASSUME_NONNULL_END

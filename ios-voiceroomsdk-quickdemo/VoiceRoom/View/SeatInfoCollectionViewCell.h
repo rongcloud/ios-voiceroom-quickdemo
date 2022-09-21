@@ -11,7 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SeatInfoCollectionViewCell : UICollectionViewCell
-- (void)updateCell:(RCVoiceSeatInfo *)seatInfo withSeatIndex:(NSUInteger)index;
+
+- (void)updateCell:(RCVoiceSeatInfo *)seatInfo seatIndex:(NSInteger)seatIndex;
+
 @end
 
 NS_ASSUME_NONNULL_END

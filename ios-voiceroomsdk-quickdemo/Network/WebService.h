@@ -99,6 +99,11 @@ NS_ASSUME_NONNULL_BEGIN
                    failure:(nullable FailureCompletion)failure;
 
 
++ (void)checkCreatedRoom:(NSInteger)type
+             responseClass:(nullable Class)responseClass
+                   success:(nullable SuccessCompletion)success
+                 failure:(nullable FailureCompletion)failure;
+
 /// 删除房间
 /// @param roomId 房间ID
 /// @param success 成功回调

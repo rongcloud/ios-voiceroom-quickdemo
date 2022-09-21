@@ -17,8 +17,6 @@
 #import <YYModel/YYModel.h>
 #import <SVProgressHUD.h>
 
-//#import "RongIMLib/RCIMClient.h"
-
 #import <RongIMLibCore/RongIMLibCore.h>
 
 #import <RCVoiceRoomLib/RCVoiceRoomLib.h>

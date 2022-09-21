@@ -15,36 +15,29 @@ PODS:
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
   - Masonry (1.1.0)
-  - RCVoiceRoomLib (2.0.4):
-    - RongCloudIM/IMLib (~> 5.1.5)
-    - RongCloudRTC/RongRTCLib (~> 5.1.9)
-  - RongCloudIM/ChatRoom (5.1.7):
-    - RongCloudIM/IMLibCore
-  - RongCloudIM/CustomerService (5.1.7):
-    - RongCloudIM/IMLibCore
-  - RongCloudIM/Discussion (5.1.7):
-    - RongCloudIM/IMLibCore
-  - RongCloudIM/IMLib (5.1.7):
+  - PLPlayerKit (3.4.9):
+    - PLPlayerKit/iphoneos (= 3.4.9)
+  - PLPlayerKit/iphoneos (3.4.9)
+  - RCVoiceRoomLib (2.1.0.1):
     - RongCloudIM/ChatRoom
-    - RongCloudIM/CustomerService
-    - RongCloudIM/Discussion
+    - RongCloudRTC/RongRTCLib
+  - RongCloudIM/ChatRoom (5.2.4):
     - RongCloudIM/IMLibCore
-    - RongCloudIM/Location
-    - RongCloudIM/PublicService
-  - RongCloudIM/IMLibCore (5.1.7)
-  - RongCloudIM/Location (5.1.7):
-    - RongCloudIM/IMLibCore
-  - RongCloudIM/PublicService (5.1.7):
-    - RongCloudIM/IMLibCore
-  - RongCloudRTC/RongRTCLib (5.1.14):
-    - RongCloudIM/IMLibCore (>= 5.1.3)
+  - RongCloudIM/IMLibCore (5.2.4)
+  - RongCloudRTC/RongRTCLib (5.2.4.1):
+    - RongCloudIM/IMLibCore (>= 5.1.4)
+  - RongCloudRTC/RongRTCPlayer (5.2.4.1):
+    - RongCloudRTC/RongRTCLib
   - SVProgressHUD (2.2.5)
   - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking
   - Masonry
-  - RCVoiceRoomLib
+  - PLPlayerKit
+  - RCVoiceRoomLib (from `../../gerrit-repo/rcvoiceroomlib-ios`)
+  - RongCloudRTC/RongRTCLib (= 5.2.4.1)
+  - RongCloudRTC/RongRTCPlayer (= 5.2.4.1)
   - SVProgressHUD
   - YYModel
 
@@ -52,21 +45,26 @@ SPEC REPOS:
   trunk:
     - AFNetworking
     - Masonry
-    - RCVoiceRoomLib
+    - PLPlayerKit
     - RongCloudIM
     - RongCloudRTC
     - SVProgressHUD
     - YYModel
 
+EXTERNAL SOURCES:
+  RCVoiceRoomLib:
+    :path: "../../gerrit-repo/rcvoiceroomlib-ios"
+
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  RCVoiceRoomLib: d93269c0f0ee12d5bae8b95f7f3935f074c4a1a9
-  RongCloudIM: 0c656a462bb788dce211ff8a985948e67006f90a
-  RongCloudRTC: de4257525ca92c027a445cb4b35ed21b9c96ae90
+  PLPlayerKit: 6d377f241918be3737c811b84f8366de385c1f91
+  RCVoiceRoomLib: 2f0fb3060ebf2b7bc82099e5ad65989580739796
+  RongCloudIM: 09269332ab90c9a8d966f38b25410c8d2629eee6
+  RongCloudRTC: 0fc0eb904bd77841701c6bc6afd7b076262615ef
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: caa8b63f38d8c84f37a3fbeea5ede6ab975dd6f4
+PODFILE CHECKSUM: c6e5dd598d4cc4c81025e5940893362013de4fce
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

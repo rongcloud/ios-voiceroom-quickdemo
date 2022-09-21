@@ -3,7 +3,8 @@
 @class RoomListResponse;
 @class RoomListData;
 @class RoomListRoom;
-@class RoomListCreateUser;
+
+#import "RoomResponse.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,30 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RoomListData : NSObject
 @property (nonatomic, nullable, strong) NSNumber *totalCount;
-@property (nonatomic, nullable, copy)   NSArray<RoomListRoom *> *rooms;
+@property (nonatomic, nullable, copy)   NSArray<RCSceneRoom *> *rooms;
 @property (nonatomic, nullable, copy)   NSArray<NSString *> *images;
 @end
 
-@interface RoomListRoom : NSObject
-@property (nonatomic, nullable, strong) NSNumber *id;
-@property (nonatomic, nullable, copy)   NSString *roomId;
-@property (nonatomic, nullable, copy)   NSString *roomName;
-@property (nonatomic, nullable, copy)   NSString *themePictureUrl;
-@property (nonatomic, nullable, copy)   NSString *backgroundUrl;
-@property (nonatomic, nullable, strong) NSNumber *isPrivate;
-@property (nonatomic, nullable, copy)   NSString *password;
-@property (nonatomic, nullable, copy)   NSString *userId;
-@property (nonatomic, nullable, strong) NSNumber *updateDt;
-@property (nonatomic, nullable, strong) RoomListCreateUser *createUser;
-@property (nonatomic, nullable, strong) NSNumber *roomType;
-@property (nonatomic, nullable, strong) NSNumber *userTotal;
-@property (nonatomic, nullable, strong) NSNumber *stop;
-@end
-
-@interface RoomListCreateUser : NSObject
-@property (nonatomic, nullable, copy) NSString *userId;
-@property (nonatomic, nullable, copy) NSString *userName;
-@property (nonatomic, nullable, copy) NSString *portrait;
-@end
 
 NS_ASSUME_NONNULL_END
