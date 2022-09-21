@@ -14,6 +14,8 @@ target 'ios-voiceroomsdk-quickdemo' do
   pod 'RongCloudRTC/RongRTCLib', '5.2.4.1'
   pod 'RongCloudRTC/RongRTCPlayer', '5.2.4.1'
   
+  pod 'PLPlayerKit'
+  
   # Pods for ios-voiceroomsdk-quickdemo
 
   target 'ios-voiceroomsdk-quickdemoTests' do
