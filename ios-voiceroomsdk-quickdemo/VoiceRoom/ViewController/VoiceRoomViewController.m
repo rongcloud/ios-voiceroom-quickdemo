@@ -89,6 +89,7 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
     [self buildLayout];
     
     [RCVoiceRoomEngine.sharedInstance setDelegate:self];
+    [[RCVoiceRoomEngine sharedInstance] setSeatPlaceHolderStateEnable:YES];
     
     NSString *roomId = self.roomResp.roomId;
     // [RCVoiceRoomEngine.sharedInstance setPushUrl:[self rtmpUrl:roomId isPush:YES]];
@@ -214,6 +215,25 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
 - (void)speakerEnable:(UIButton *)sender {
     [[RCVoiceRoomEngine sharedInstance] enableSpeaker:!sender.selected];
     sender.selected = !sender.selected;
+    
+    /** TEST updateSeatInfo
+    RCVoiceSeatInfo *seat = [[RCVoiceSeatInfo alloc] init];
+    seat.mute = NO;
+    seat.extra = @"hahahh";
+    [[RCVoiceRoomEngine sharedInstance] updateSeatInfo:0 seatInfo:seat success:^{
+        
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        
+    }];
+    */
+    
+    /** TEST clearSeatState
+    [[RCVoiceRoomEngine sharedInstance] clearSeatState:^(NSArray<NSString *> * _Nonnull clearKeys) {
+        NSLog(@"clearSeatState-clearKeys: %@", clearKeys);
+    } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+        
+    }];
+    */
 }
 
 - (void)micDisable:(UIButton *)sender {
@@ -291,13 +311,41 @@ static NSString * const cellIdentifier = @"SeatInfoCollectionViewCell";
             }
         }
         if (currentUserOnSeat) { // 已经在麦上，换座位
+            /**
+            RCVoiceSeatInfo *preSeat = [[RCVoiceSeatInfo alloc] init];
+            preSeat.mute = YES;
+            preSeat.extra = @"preSeat extra info";
+
+            RCVoiceSeatInfo *targetSeat = [[RCVoiceSeatInfo alloc] init];
+            targetSeat.mute = NO;
+            targetSeat.extra = @"targetSeat extra info";
+
+            [[RCVoiceRoomEngine sharedInstance] switchSeatTo:index preSeat:preSeat targetSeat:targetSeat success:^{
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
+            } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"换座位失败 code: %ld",(long)code]];
+            }];
+
+            */
+            
+            /**
+             [[RCVoiceRoomEngine sharedInstance] switchSeatTo:index switchMute:NO switchExtra:NO success:^{
+                 [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
+             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
+                 [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
+             }];
+             */
+        
             [[RCVoiceRoomEngine sharedInstance] switchSeatTo:index success:^{
                 [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"换座位成功当前座位号: %ld",(long)index]];
             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                 [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"换座位失败 code: %ld",(long)code]];
             }];
         } else { //不在麦上，直接上麦
-            [[RCVoiceRoomEngine sharedInstance] enterSeat:index success:^{
+            RCVoiceSeatInfo *seat = [[RCVoiceSeatInfo alloc] init];
+            seat.mute = NO;
+            seat.extra = @"lala";
+            [[RCVoiceRoomEngine sharedInstance] enterSeat:index seatInfo:seat success:^{
                 [SVProgressHUD showSuccessWithStatus:@"上麦成功"];
             } error:^(RCVoiceRoomErrorCode code, NSString * _Nonnull msg) {
                 [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"上麦失败 code: %ld",(long)code]];
